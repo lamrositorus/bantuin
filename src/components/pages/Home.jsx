@@ -1,5 +1,6 @@
 import donation from "../../assets/pipp.svg";
 import gambar from "../../assets/gambar.svg";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   return (
@@ -55,6 +56,9 @@ export const Home = () => {
             <p className="text-sm text-gray-500 italic mt-4">
               "Berbagi tidak akan membuatmu miskin, justru memperkaya jiwamu." 
             </p>
+            <Link to={"/request"}  className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 w-fit">
+              Minta Bantuan
+            </Link>
           </div>
         </div>
       </div>

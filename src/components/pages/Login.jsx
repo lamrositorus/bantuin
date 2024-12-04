@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { FaUser, FaLock } from 'react-icons/fa';
 import { APISource } from '../../data/source-api';
-import { jwtDecode } from 'jwt-decode';
 
 export const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -28,24 +27,11 @@ export const Login = ({ onLogin }) => {
       if (data) {
         console.log('Login berhasil:', data);
 
-        const accessToken = data.accessToken;
-        const refreshToken = data.refreshToken;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken',refreshToken);
-
-
-
-        const decodedToken = jwtDecode(accessToken);
-        console.log('Decoded Token:', decodedToken);
-        const userId = decodedToken.id;
-        console.log('User ID:', userId);
-        localStorage.setItem('userId', userId);
-
 
 
 
         onLogin();
-        navigate('/');
+        navigate('/Home');
       } else {
         alert(data.message || 'Login gagal');
       }
