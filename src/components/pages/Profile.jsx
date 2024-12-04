@@ -144,7 +144,7 @@ export const Profile = () => {
           <div className="relative group">
             <img
               className="w-32 h-32 md:w-40 md:h-40 rounded-2xl border-4 border-gray-100 object-cover transition-transform hover:scale-105"
-              src={profile.profilePicture || '../public/profile.png'}
+              src={profile.profilePicture || '../src/assets/profile.png'}
               alt="Profile"
             />
             {isEditing && (
