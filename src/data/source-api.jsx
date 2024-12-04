@@ -49,16 +49,17 @@ export class APISource {
     }
 
     static async getProfile(userId) {
-        const token = localStorage.getItem('refreshToken');
+        const token = localStorage.getItem('accessToken');
         const response = await fetch(API_ENDPOINT.profile(userId), {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                
             },
         });
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json();            
             throw new Error(errorData.message || 'Gagal mendapatkan profil');
         }
         const responseJson = await response.json();
@@ -66,13 +67,14 @@ export class APISource {
     }
     
     static async updateProfile(userId, updatedData) {
-        const token = localStorage.getItem('refreshToken');
+        const token = localStorage.getItem('accessToken');
         const response = await fetch(API_ENDPOINT.profile(userId), {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                
             },
             body: JSON.stringify({
                 fullname: updatedData.fullname,
