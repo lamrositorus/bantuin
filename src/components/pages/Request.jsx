@@ -3,9 +3,12 @@ import { APISource } from '../../data/source-api';
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
+
 export const Request = () => {
   const [disasterId, setDisasterId] = useState('');
   const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const [requestItems, setRequestItems] = useState([{
     categoryId: '',
     quantity: 1,
@@ -47,6 +50,9 @@ export const Request = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
+    // Set loading state to true
+    setLoading(true);
+
     // Menggunakan SweetAlert2 untuk konfirmasi
     const result = await Swal.fire({
       title: 'Apakah Anda yakin?',
@@ -58,11 +64,13 @@ export const Request = () => {
     });
   
     if (!result.isConfirmed) {
+      setLoading(false); // Reset loading if the user cancels
       return; // Hentikan pengiriman jika tidak disetujui
     }
   
     if (!disasterId || !description || requestItems.some(item => !item.categoryId || !item.unitId || !item.description || item.quantity <= 0)) {
       toast.error("Silakan lengkapi semua field yang diperlukan.");
+      setLoading(false); // Reset loading if validation fails
       return;
     }
   
@@ -74,9 +82,11 @@ export const Request = () => {
     } catch (error) {
       console.error(error);
       toast.error('Terjadi kesalahan saat mengirim permintaan.');
+    } finally {
+      // Set loading state to false after the request is complete
+      setLoading(false);
     }
   };
-  
 
   const CATEGORIES = [
     { id: 'category-1', label: 'Makanan' },
@@ -177,7 +187,7 @@ export const Request = () => {
                     <select
                       value={item.categoryId}
                       onChange={(e) => handleItemChange(index, 'categoryId', e.target.value)}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white"
+                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
                       <option value="" disabled>Pilih Kategori</option>
                       {CATEGORIES.map(category => (
@@ -188,67 +198,78 @@ export const Request = () => {
                     </select>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Jumlah</label>
-                      <input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                        className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">Unit</label>
-                      <select
-                        value={item.unitId}
-                        onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white"
-                      >
-                        <option value="" disabled>Pilih Unit</option>
-                        {UNITS.map(unit => (
-                          <option key={unit.id} value={unit.id}>
-                            {unit.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Jumlah</label>
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
+                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Deskripsi Barang</label>
+                    <label className="block text-sm font-medium text-gray-700">Satuan</label>
+                    <select
+                      value={item.unitId}
+                      onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
+                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    >
+                      <option value="" disabled>Pilih Satuan</option>
+                      {UNITS.map(unit => (
+                        <option key={unit.id} value={unit.id}>
+                          {unit.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
                     <input
                       type="text"
                       value={item.description}
                       onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                      className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     />
                   </div>
+                </div>
 
+                <div className="flex justify-end mt-4">
                   <button
                     type="button"
                     onClick={() => handleRemoveItem(index)}
-                    className="absolute top-0 right-0 mt-2 mr-2 text-red-600"
+                    className="inline-flex items-center text-sm text-red-500 hover:text-red-700"
                   >
-                    <TrashIcon className="h-5 w-5" />
+                    <TrashIcon className="h-5 w-5 mr-2" />
+                    Hapus Barang
                   </button>
                 </div>
               </div>
             ))}
           </div>
 
-          <button
-            type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Kirim Permintaan
-          </button>
+          <div className="mt-6">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {loading ? (
+              <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+              Kirim Permintaan
+            </div>
+              ) : (
+                'Kirim Permintaan'
+              )}
+            </button>
+          </div>
         </form>
       </div>
-
       <ToastContainer />
     </div>
   );
 };
+
+export default Request;

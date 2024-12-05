@@ -179,177 +179,186 @@ export const GetDetail = () => {
   }
 
   return (
-    
     <div className="min-h-screen pt-20 bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-8">{editing ? 'Edit Permintaan Bantuan' : 'Detail Permintaan Bantuan'}</h2>
         {loading ? (
-    <div className="flex justify-center items-center space-x-3">
-      <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-      <span className="text-gray-600">Loading...</span>
-    </div>
-    ) : error ? (
-    <div className="text-center text-red-600 flex justify-center items-center space-x-2">
-      <FaExclamationCircle className="text-red-600 text-3xl" />
-      <p className="text-lg">{error}</p>
-    </div>
-    ) : (
-        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">ID Bencana</label>
-            <select
-              value={requestDetail.disaster_id}
-              disabled={!editing}
-              className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            >
-              {DISASTERS.map(disaster => (
-                <option key={disaster.id} value={disaster.id}>
-                  {disaster.name}
-                </option>
-              ))}
-            </select>
+          <div className="flex justify-center items-center space-x-3">
+            <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+            <span className="text-gray-600">Loading...</span>
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Deskripsi Umum</label>
-            <textarea
-              value={updatedDescription}
-              onChange={(e) => setUpdatedDescription(e.target.value)}
-              rows={3}
-              disabled={!editing}
-              className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+        ) : error ? (
+          <div className="text-center text-red-600 flex justify-center items-center space-x-2">
+            <FaExclamationCircle className="text-red-600 text-3xl" />
+            <p className="text-lg">{error}</p>
           </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Daftar Barang yang Dibutuhkan</h3>
-              {editing && (
-                <button
-                  type="button"
-                  onClick={handleAddItem}
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800"
-                >
-                  <PlusCircleIcon className="h-5 w-5 mr-2" />
-                  Tambah Barang
-                </button>
-              )}
+        ) : (
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">ID Bencana</label>
+              <select
+                value={requestDetail.disaster_id}
+                disabled={!editing}
+                className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              >
+                {DISASTERS.map(disaster => (
+                  <option key={disaster.id} value={disaster.id}>
+                    {disaster.name}
+                  </option>
+                ))}
+              </select>
             </div>
-
-            {updatedItems.map((item, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Kategori</label>
-                    <select
-                      value={item.categoryId}
-                      onChange={(e) => handleItemChange(index, 'categoryId', e.target.value)}
-                      disabled={!editing}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                      {CATEGORIES.map(category => (
-                        <option key={category.id} value={category.id}>
-                          {category.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Jumlah</label>
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                      disabled={!editing}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Satuan</label>
-                    <select
-                      value={item.unitId}
-                      onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
-                      disabled={!editing}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    >
-                      {UNITS.map(unit => (
-                        <option key={unit.id} value={unit.id}>
-                          {unit.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
-                    <textarea
-                      value={item.description}
-                      onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                      disabled={!editing}
-                      rows={2}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
+  
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Deskripsi Umum</label>
+              <textarea
+                value={updatedDescription}
+                onChange={(e) => setUpdatedDescription(e.target.value)}
+                rows={3}
+                disabled={!editing}
+                className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+  
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-medium text-gray-900">Daftar Barang yang Dibutuhkan</h3>
                 {editing && (
                   <button
                     type="button"
-                    onClick={() => handleRemoveItem(index)}
-                    className="mt-2 inline-flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:text-red-800"
+                    onClick={handleAddItem}
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800"
                   >
-                    <TrashIcon className="h-5 w-5 mr-2" />
-                    Hapus Barang
+                    <PlusCircleIcon className="h-5 w-5 mr-2" />
+                    Tambah Barang
                   </button>
                 )}
               </div>
-            ))}
-          </div>
-
-          <div className="flex justify-end space-x-4">
-            {editing ? (
-              <>
+  
+              {updatedItems.map((item, index) => (
+                <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Kategori</label>
+                      <select
+                        value={item.categoryId}
+                        onChange={(e) => handleItemChange(index, 'categoryId', e.target.value)}
+                        disabled={!editing}
+                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      >
+                        {CATEGORIES.map(category => (
+                          <option key={category.id} value={category.id}>
+                            {category.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+  
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Jumlah</label>
+                      <input
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
+                        disabled={!editing}
+                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      />
+                    </div>
+  
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Satuan</label>
+                      <select
+                        value={item.unitId}
+                        onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
+                        disabled={!editing}
+                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      >
+                        {UNITS.map(unit => (
+                          <option key={unit.id} value={unit.id}>
+                            {unit.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+  
+                    <div className="sm:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
+                      <textarea
+                        value={item.description}
+                        onChange={(e) => handleItemChange(index, 'description', e.target.value)}
+                        disabled={!editing}
+                        rows={2}
+                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                  {editing && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveItem(index)}
+                      className="mt-2 inline-flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:text-red-800"
+                    >
+                      <TrashIcon className="h-5 w-5 mr-2" />
+                      Hapus Barang
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+  
+            <div className="flex justify-end space-x-4">
+              {editing ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleUpdate}
+                    disabled={loading} // Disable button when loading
+                    className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        Sedang Masuk...
+                      </div>
+                    ) : (
+                      'Simpan'
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditing(false)}
+                    className="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700 rounded-md"
+                  >
+                    Batal
+                  </button>
+                </>
+              ) : (
                 <button
                   type="button"
-                  onClick={handleUpdate}
+                  onClick={() => setEditing(true)}
                   className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
                 >
-                  Simpan
+                  Edit
                 </button>
+              )}
+  
+              {!editing && (
                 <button
                   type="button"
-                  onClick={() => setEditing(false)}
-                  className="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700 rounded-md"
+                  onClick={handleDelete}
+                  className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md"
                 >
-                  Batal
+                  Hapus
                 </button>
-              </>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setEditing(true)}
-                className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
-              >
-                Edit
-              </button>
-            )}
-
-            {!editing && (
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md"
-              >
-                Hapus
-              </button>
-            )}
-          </div>
-        </form>
-    )};
+              )}
+            </div>
+          </form>
+        )}
       </div>
       <ToastContainer />
-    </div>      
+    </div>
   );
+  
+  
 
 };
