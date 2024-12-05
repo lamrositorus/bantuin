@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { APISource } from '../data/source-api';
+import { FaHandsHelping } from 'react-icons/fa'; // Import an icon
 
 export const Navbar = ({ isLoggedIn, onLogout }) => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     // Ambil data dari localStorage dan pastikan parsing JSON aman
     const userId = localStorage.getItem('userId');
-    const requestIds = JSON.parse(localStorage.getItem('requestIds') || '[]'); // Default ke array kosong
-    const requestId = requestIds.length > 0 ? requestIds[0] : null;
+
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -33,18 +33,20 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
     }
 
     return (
-        <header className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50 transition-all duration-300">
+        <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-orange-400 to-orange-600 shadow-lg z-50 transition-all duration-300">
             <nav className="container mx-auto flex items-center justify-between p-4">
-                {/* Logo */}
-                <Link className="text-2xl font-bold text-gray-800 hover:text-orange-500 transition-colors duration-300" to="/home">
-                    <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                {/* Logo with Icon and Tagline */}
+                <Link className="flex items-center text-3xl font-extrabold text-white hover:text-yellow-300 transition-colors duration-300" to="/home">
+                    <FaHandsHelping className="text-yellow-300 mr-2 transform transition-transform duration-300 hover:scale-110" /> {/* Icon with animation */}
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-500">
                         BantuLink
                     </span>
+                    <span className="text-lg text-white ml-2 italic">- Your Helping Hand</span> {/* Tagline */}
                 </Link>
-
+    
                 {/* Menu Toggle */}
                 <div
-                    className={`hamburger ${menuOpen ? 'open' : ''} md:hidden cursor-pointer p-3 rounded-full hover:bg-orange-50 transition-colors`}
+                    className={`hamburger ${menuOpen ? 'open' : ''} md:hidden cursor-pointer p-3 rounded-full hover:bg-yellow-50 transition-colors`}
                     onClick={toggleMenu}
                 >
                     <div className="flex flex-col gap-1.5 relative w-6 h-5">
@@ -65,7 +67,7 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                         ></div>
                     </div>
                 </div>
-
+    
                 {/* Navigation Menu */}
                 <ul
                     className={`absolute md:static md:bg-transparent w-full md:w-auto transition-all left-0 duration-300 ease-in-out ${
@@ -78,8 +80,8 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                             className={({ isActive }) =>
                                 `block px-5 py-2 font-medium rounded-lg transition-all ${
                                     isActive
-                                        ? 'bg-orange-50 text-orange-500'
-                                        : 'text-gray-700 hover:bg-orange-50 hover:text-orange-500'
+                                        ? 'bg-yellow-50 text-orange-500'
+                                        : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'
                                 }`
                             }
                         >
@@ -89,7 +91,7 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                     <li>
                         <Link
                             to="/allrequest"
-                            className="block px-5 py-2 font-medium rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-all"
+                            className="block px-5 py-2 font-medium rounded-lg text-gray-700 hover:bg-yellow-50 hover:text-orange-500 transition-all"
                         >
                             My Request
                         </Link>
@@ -100,8 +102,8 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                             className={({ isActive }) =>
                                 `block px-5 py-2 font-medium rounded-lg transition-all ${
                                     isActive
-                                        ? 'bg-orange-50 text-orange-500'
-                                        : 'text-gray-700 hover:bg-orange-50 hover:text-orange-500'
+                                        ? 'bg-yellow-50 text-orange-500'
+                                        : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'
                                 }`
                             }
                         >
@@ -114,8 +116,8 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                             className={({ isActive }) =>
                                 `block px-5 py-2 font-medium rounded-lg transition-all ${
                                     isActive
-                                        ? 'bg-orange-50 text-orange-500'
-                                        : 'text-gray-700 hover:bg-orange-50 hover:text-orange-500'
+                                        ? 'bg-yellow-50 text-orange-500'
+                                        : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'
                                 }`
                             }
                         >
@@ -123,7 +125,7 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink
+                        < NavLink
                             to="/login"
                             onClick={handleLogout}
                             className="block px-5 py-2 text-gray-700 font-medium rounded-lg hover:bg-red-50 hover:text-red-500 transition-all"
