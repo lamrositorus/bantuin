@@ -41,7 +41,7 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-500">
                         BantuLink
                     </span>
-                    <span className="text-lg text-white ml-2 italic">- Your Helping Hand</span> {/* Tagline */}
+                    <span className="text-lg text-white ml-2 italic"></span> {/* Tagline */}
                 </Link>
     
                 {/* Menu Toggle */}
