@@ -39,7 +39,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                 </Link>
 
                 <div
-                    className={`hamburger ${menuOpen ? 'open' : ''} md:hidden cursor-pointer p-3 rounded-full hover:bg-yellow-50 transition-colors`}
+                    className={`hamburger ${menuOpen ? 'open' : ''} md:hidden cursor-pointer p-3 rounded-full  transition-colors`}
                     onClick={toggleMenu}
                 >
                     <div className="flex flex-col gap-1.5 relative w-6 h-5">
