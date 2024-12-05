@@ -33,7 +33,7 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
     }
 
     return (
-        <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-orange-400 to-orange-600 shadow-lg z-50 transition-all duration-300">
+        <header className="fixed top-0 left-0 w-full bg-gradient-to-r backdrop:blur-md from-orange-400 to-orange-600 shadow-lg z-50 transition-all duration-300">
             <nav className="container mx-auto flex items-center justify-between p-4">
                 {/* Logo with Icon and Tagline */}
                 <Link className="flex items-center text-3xl font-extrabold text-white hover:text-yellow-300 transition-colors duration-300" to="/home">
