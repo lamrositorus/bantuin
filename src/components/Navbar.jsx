@@ -1,7 +1,7 @@
 import { useState } from 'react'; 
 import { Link, NavLink } from 'react-router-dom'; 
 import { APISource } from '../data/source-api'; 
-import { FaHandsHelping } from 'react-icons/fa'; // Import an icon
+import { FaHandsHelping } from 'react-icons/fa'; 
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
 export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => { 
@@ -51,56 +51,68 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
 
                 <button onClick={toggleTheme} className={`flex items-center justify-center p-2 rounded-full transition-colors duration-300 ${isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-300 hover:bg-gray-400'}`}>
                     {isDarkMode ? (
-                        <SunIcon className="h-6 w-6 text-yellow-300"  />
+                        <SunIcon className="h-6 w-6 text-yellow-300" />
                     ) : (
                         <MoonIcon className="h-6 w-6 text-gray-800" />
                     )}
                 </button>
 
                 <ul
-                    className={`absolute md:static md:bg-transparent w-full md:w-auto transition-all left-0 duration-300 ease-in-out ${
-                        menuOpen ? 'top-16 opacity-100 bg-white/95 shadow-lg' : 'top-[-200px] opacity-0'
-                    } md:flex md:opacity-100 md:top-0 md:items-center md:space-x-2`}
-                >
-                    <li>
-                        <NavLink
-                            to="/home"
-                            className={({ isActive }) =>
-                                `block px-5 py-2 font-medium rounded-lg transition-all ${
-                                    isActive
-                                        ? 'bg-yellow-50 text-orange-500'
-                                        : `${isDarkMode ? 'text-gray-300' : 'text-gray-700'} hover:bg-yellow-50 hover:text-orange-500`
-                                }`
-                            }
-                        >
-                            Home
-                        </NavLink>
-                    </li>
-                    <li>
-                        <Link
-                            to="/allrequest"
-                            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange -500'}`}
-                        >
-                            All Requests
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            to={`/profile/${userId}`}
-                            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`}
-                        >
-                            Profile
-                        </Link>
-                    </li>
-                    <li>
-                        <button
-                            onClick={handleLogout}
-                            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`}
-                        >
-                            Logout
-                        </button>
-                    </li>
-                </ul>
+    className={`absolute md:static md:bg-transparent w-full md:w-auto transition-all left-0 duration-300 ease-in-out ${
+        menuOpen ? 'top-16 opacity-100 bg-slate-200 shadow-lg' : 'top-[-200px] opacity-0'
+    } md:flex md:opacity-100 md:top-0 md:items-center md:space-x-2`}
+>
+    <li>
+        <NavLink
+            to="/home"
+            className={({ isActive }) =>
+                `block px-5 py-2 font-medium rounded-lg transition-all ${
+                    isActive
+                        ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-500'}`
+                        : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`
+                }`
+            }
+        >
+            Home
+        </NavLink>
+    </li>
+    <li>
+        <NavLink
+            to="/allrequest"
+            className={({ isActive }) =>
+                `block px-5 py-2 font-medium rounded-lg transition-all ${
+                    isActive
+                        ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-500'}`
+                        : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`
+                }`
+            }
+        >
+            All Requests
+        </NavLink>
+    </li>
+    <li>
+        <NavLink
+            to={`/profile/${userId}`}
+            className={({ isActive }) =>
+                `block px-5 py-2 font-medium rounded-lg transition-all ${
+                    isActive
+                        ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-500'}`
+                        : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`
+                }`
+            }
+        >
+            Profile
+        </NavLink>
+    </li>
+    <li>
+        <button
+            onClick={handleLogout}
+            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`}
+        >
+            Logout
+        </button>
+    </li>
+</ul>
             </nav>
         </header>
     );
