@@ -27,8 +27,8 @@ export const Login = ({ onLogin }) => {
       if (data) {
         console.log('Login berhasil:', data);
         onLogin();
-        navigate('/Home');
         toast.success('Login berhasil')
+        navigate('/Home');
       } else {
         alert(data.message || 'Login gagal');
       }
