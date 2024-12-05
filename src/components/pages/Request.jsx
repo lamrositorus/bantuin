@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { APISource } from '../../data/source-api';
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 export const Request = () => {
   const [disasterId, setDisasterId] = useState('');

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { FaSpinner, FaExclamationCircle } from 'react-icons/fa'; // Import React Icons
+
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
@@ -82,6 +84,7 @@ export const GetDetail = () => {
   }, [id]);
 
   const handleUpdate = async () => {
+    // Menampilkan konfirmasi SweetAlert
     const result = await Swal.fire({
       title: 'Apakah Anda yakin?',
       text: "Data ini akan diperbarui!",
@@ -94,22 +97,32 @@ export const GetDetail = () => {
   
     if (result.isConfirmed) {
       try {
+        // Proses pembaruan data
+        const updatedItemDescriptions = updatedItems.filter(item => item.isUpdated).map(item => item.description);
+        
+        // Update request API
         const response = await APISource.updateRequest(id, requestDetail.disaster_id, updatedDescription, updatedItems);
         console.log('Update Response:', response);
+  
+        // Menampilkan Toast setelah pembaruan berhasil
+        updatedItemDescriptions.forEach(desc => {
+          toast.success(`Item yang diperbarui: ${desc}`);
+        });
+  
+        // Menampilkan SweetAlert setelah update berhasil
         Swal.fire('Diperbarui!', 'Permintaan bantuan telah diperbarui.', 'success');
+  
         setEditing(false); // Menyembunyikan mode edit setelah update
       } catch (err) {
         setError(err.message);
         Swal.fire('Error!', 'Terjadi kesalahan saat memperbarui data.', 'error');
+        toast.error('Gagal memperbarui data!');
+        navigate(`/GetRequest/${id}`);
       }
     } else {
       Swal.fire('Batal', 'Pembaharuan data dibatalkan', 'info');
     }
   };
-  
-  
-  
-  
 
   const handleAddItem = () => {
     setUpdatedItems([...updatedItems, { categoryId: '', quantity: 1, unitId: '', description: '' }]);
@@ -127,6 +140,7 @@ export const GetDetail = () => {
   };
 
   const handleDelete = async () => {
+    // Menampilkan konfirmasi SweetAlert untuk penghapusan
     const result = await Swal.fire({
       title: 'Apakah Anda yakin?',
       text: "Data ini akan dihapus!",
@@ -139,26 +153,47 @@ export const GetDetail = () => {
   
     if (result.isConfirmed) {
       try {
+        // Menghapus data
         await APISource.deleteRequest(id);
-        navigate('/request');
+  
+        // Menampilkan Toast setelah penghapusan berhasil
+        toast.success('Permintaan bantuan berhasil dihapus.');
+  
+        // Menampilkan SweetAlert setelah penghapusan berhasil
         Swal.fire('Dihapus!', 'Permintaan bantuan telah dihapus.', 'success');
+        
+        // Navigasi ke halaman lain atau reset state setelah penghapusan
+        navigate('/request');
       } catch (err) {
         setError(err.message);
         Swal.fire('Error!', 'Terjadi kesalahan saat menghapus data.', 'error');
+        toast.error('Gagal menghapus permintaan bantuan!');
       }
     } else {
       Swal.fire('Batal', 'Penghapusan data dibatalkan', 'info');
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   return (
+    
     <div className="min-h-screen pt-20 bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-8">{editing ? 'Edit Permintaan Bantuan' : 'Detail Permintaan Bantuan'}</h2>
+        {loading ? (
+    <div className="flex justify-center items-center space-x-3">
+      <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+      <span className="text-gray-600">Loading...</span>
+    </div>
+    ) : error ? (
+    <div className="text-center text-red-600 flex justify-center items-center space-x-2">
+      <FaExclamationCircle className="text-red-600 text-3xl" />
+      <p className="text-lg">{error}</p>
+    </div>
+    ) : (
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">ID Bencana</label>
@@ -311,7 +346,10 @@ export const GetDetail = () => {
             )}
           </div>
         </form>
+    )};
       </div>
-    </div>
+      <ToastContainer />
+    </div>      
   );
+
 };

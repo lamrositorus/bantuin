@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaPhone, FaEnvelope, FaLock, FaHome, FaTransgender } from 'react-icons/fa';
 import { APISource } from "../../data/source-api";
+import { toast, ToastContainer } from 'react-toastify';
 
 export const Signup = () => {
   const [namaLengkap, setNamaLengkap] = useState("");
@@ -31,6 +32,7 @@ export const Signup = () => {
         alert('Pendaftaran berhasil');
         navigate('/login');
         localStorage.setItem('userId', userId);
+        toast.success('Pendaftaran berhasil');
       }
     } catch (error) {
       alert(error.message || 'Pendaftaran gagal');
@@ -40,6 +42,7 @@ export const Signup = () => {
   };
 
   return (
+    <>
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
       <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-md w-full m-4 transition-all duration-300 hover:shadow-3xl">
         <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-orange-500 to-yellow-500 text-transparent bg-clip-text">
@@ -169,6 +172,8 @@ export const Signup = () => {
         </form>
       </div>
     </div>
+    <ToastContainer />
+    </>
   );
 };
 

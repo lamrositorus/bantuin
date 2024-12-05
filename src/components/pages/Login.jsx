@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { FaUser, FaLock } from 'react-icons/fa';
 import { APISource } from '../../data/source-api';
-
+import { ToastContainer, toast } from 'react-toastify';
 export const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,12 +26,9 @@ export const Login = ({ onLogin }) => {
       const data = await APISource.login(email, password);
       if (data) {
         console.log('Login berhasil:', data);
-
-
-
-
         onLogin();
         navigate('/Home');
+        toast.success('Login berhasil')
       } else {
         alert(data.message || 'Login gagal');
       }
@@ -45,20 +42,7 @@ export const Login = ({ onLogin }) => {
   };
 
   return (
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
       <div className="bg-white backdrop-blur-sm bg-opacity-95 shadow-2xl rounded-2xl p-8 max-w-md w-full m-4 transition-all duration-300">
         <div className="text-center mb-8">
@@ -128,7 +112,9 @@ export const Login = ({ onLogin }) => {
           </div>
         </form>
       </div>
-    </div>
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+      </div>
+    
   );
 
 };
