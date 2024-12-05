@@ -84,8 +84,8 @@ export const GetDetail = () => {
   }, [id]);
 
   const handleUpdate = async () => {
-    // Menampilkan konfirmasi SweetAlert
-    const result = await Swal.fire({
+    // Menampilkan konfirmasi menggunakan toast
+    const confirmUpdate = await Swal.fire({
       title: 'Apakah Anda yakin?',
       text: "Data ini akan diperbarui!",
       icon: 'warning',
@@ -95,12 +95,10 @@ export const GetDetail = () => {
       reverseButtons: true,
     });
   
-    if (result.isConfirmed) {
+    if (confirmUpdate.isConfirmed) {
+      setLoading(true); // Set loading to true before the update process
       try {
-        // Proses pembaruan data
         const updatedItemDescriptions = updatedItems.filter(item => item.isUpdated).map(item => item.description);
-        
-        // Update request API
         const response = await APISource.updateRequest(id, requestDetail.disaster_id, updatedDescription, updatedItems);
         console.log('Update Response:', response);
   
@@ -109,18 +107,17 @@ export const GetDetail = () => {
           toast.success(`Item yang diperbarui: ${desc}`);
         });
   
-        // Menampilkan SweetAlert setelah update berhasil
-        Swal.fire('Diperbarui!', 'Permintaan bantuan telah diperbarui.', 'success');
-  
+        // Menampilkan Toast setelah update berhasil
+        toast.success('Permintaan bantuan telah diperbarui.');
         setEditing(false); // Menyembunyikan mode edit setelah update
       } catch (err) {
         setError(err.message);
-        Swal.fire('Error!', 'Terjadi kesalahan saat memperbarui data.', 'error');
         toast.error('Gagal memperbarui data!');
-        navigate(`/GetRequest/${id}`);
+      } finally {
+        setLoading(false); // Set loading to false after the update process
       }
     } else {
-      Swal.fire('Batal', 'Pembaharuan data dibatalkan', 'info');
+      toast.info('Pembaharuan data dibatalkan');
     }
   };
 
@@ -157,20 +154,17 @@ export const GetDetail = () => {
         await APISource.deleteRequest(id);
   
         // Menampilkan Toast setelah penghapusan berhasil
-        toast.success('Permintaan bantuan berhasil dihapus.');
-  
-        // Menampilkan SweetAlert setelah penghapusan berhasil
-        Swal.fire('Dihapus!', 'Permintaan bantuan telah dihapus.', 'success');
+        
         
         // Navigasi ke halaman lain atau reset state setelah penghapusan
+        Swal.fire('Berhasil', 'Permintaan bantuan telah dihapus.', 'success');
         navigate('/request');
       } catch (err) {
         setError(err.message);
-        Swal.fire('Error!', 'Terjadi kesalahan saat menghapus data.', 'error');
         toast.error('Gagal menghapus permintaan bantuan!');
       }
     } else {
-      Swal.fire('Batal', 'Penghapusan data dibatalkan', 'info');
+      toast.info('Penghapusan data dibatalkan');
     }
   };
 

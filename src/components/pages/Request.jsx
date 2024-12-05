@@ -25,6 +25,7 @@ export const Request = () => {
       unitId: '',
       description: ''
     }]);
+    toast.success('Form berhasil dikosongkan!');
   };
 
   const handleAddItem = () => {
@@ -34,17 +35,20 @@ export const Request = () => {
       unitId: '',
       description: ''
     }]);
+    
   };
 
   const handleRemoveItem = (index) => {
     const newItems = requestItems.filter((_, i) => i !== index);
     setRequestItems(newItems);
+    toast.success('Data berhasil dihapus');
   };
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...requestItems];
     newItems[index][field] = field === 'quantity' ? parseInt(value) : value;
     setRequestItems(newItems);
+    toast.success('Data berhasil diubah');
   };
 
   const handleSubmit = async (event) => {
@@ -65,11 +69,12 @@ export const Request = () => {
   
     if (!result.isConfirmed) {
       setLoading(false); // Reset loading if the user cancels
+      toast.error('Permintaan dibatalkan.');
       return; // Hentikan pengiriman jika tidak disetujui
     }
   
     if (!disasterId || !description || requestItems.some(item => !item.categoryId || !item.unitId || !item.description || item.quantity <= 0)) {
-      toast.error("Silakan lengkapi semua field yang diperlukan.");
+      toast.info('Silakan lengkapi semua field yang diperlukan.');
       setLoading(false); // Reset loading if validation fails
       return;
     }
@@ -84,7 +89,7 @@ export const Request = () => {
       toast.error('Terjadi kesalahan saat mengirim permintaan.');
     } finally {
       // Set loading state to false after the request is complete
-      setLoading(false);
+      setLoading(false); 
     }
   };
 

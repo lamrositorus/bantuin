@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {Route, Routes} from 'react-router-dom'
 import { Navbar } from './components/Navbar'
 import {About, Home, Login, Signup, Profile, Request, GetAllRequest, GetDetail} from './components/pages'
-
+import { ToastContainer } from 'react-toastify';
 const App = () => {
   
 const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -16,6 +16,7 @@ const handleLogout = () => {
   return (
     <div className="w-full h-full bg-slate-100">
       <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout}/>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<Login onLogin={handleLogin}/>}/>
         <Route path="/Home" element={<Home/>}/>
