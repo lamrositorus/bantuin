@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
-import profil from '../../../dist/assets/profile-BVt0Jl69.png'
+import profil from '../../assets/profile.png'
 const validatePhoneNumber = (phone) => {
     const phoneRegex = /^(?:\+62|62|0)[2-9][0-9]{8,12}$/;
     return phoneRegex.test(phone);
