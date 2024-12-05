@@ -83,15 +83,7 @@ export const GetDetail = () => {
     try {
       const response = await APISource.updateRequest(id, requestDetail.disaster_id, updatedDescription, updatedItems);
       console.log('Update Response:', response);
-  
-      // If the response is successful, but does not contain the expected request data
-      if (response.data && response.data.status === 'success') {
-        setEditing(false);  // Close the edit mode or update UI
-        alert(response.data.message); // Show success message from the response
-      } else {
-        console.error('Response does not contain expected data:', response);
-        setError('Failed to update request. No request data returned.');
-      }
+
     } catch (err) {
       console.error('Error updating request:', err.message);
       setError(err.message);
