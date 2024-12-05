@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { APISource } from '../../data/source-api';
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 export const Request = () => {
   const [disasterId, setDisasterId] = useState('');
   const [description, setDescription] = useState('');
@@ -22,6 +24,7 @@ export const Request = () => {
       description: ''
     }]);
   };
+
   const handleAddItem = () => {
     setRequestItems([...requestItems, {
       categoryId: '',
@@ -44,21 +47,37 @@ export const Request = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
+    // Menggunakan SweetAlert2 untuk konfirmasi
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Anda akan mengirim permintaan ini.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, kirim!',
+      cancelButtonText: 'Batal',
+    });
+  
+    if (!result.isConfirmed) {
+      return; // Hentikan pengiriman jika tidak disetujui
+    }
+  
     if (!disasterId || !description || requestItems.some(item => !item.categoryId || !item.unitId || !item.description || item.quantity <= 0)) {
-      alert("Silakan lengkapi semua field yang diperlukan.");
+      toast.error("Silakan lengkapi semua field yang diperlukan.");
       return;
     }
-    
+  
     try {
       const response = await APISource.addNewRequest(disasterId, description, requestItems);
-      console.log('response api: ',response);
+      console.log('response api: ', response);
       clearForm();
-      // Handle success - tambahkan toast notification
+      toast.success('Permintaan berhasil dikirim!');
     } catch (error) {
       console.error(error);
-      // Handle error - tambahkan toast notification
+      toast.error('Terjadi kesalahan saat mengirim permintaan.');
     }
   };
+  
 
   const CATEGORIES = [
     { id: 'category-1', label: 'Makanan' },
@@ -87,7 +106,7 @@ export const Request = () => {
     { id: 'disaster-10', name: 'Angin Puting Beliung' },
     { id: 'disaster-11', name: 'Gelombang Pasang atau Badai' },
     { id: 'disaster-12', name: 'Kecelakaan transportasi' },
-    { id: 'dis aster-13', name: 'Kecelakaan Industri' },
+    { id: 'disaster-13', name: 'Kecelakaan Industri' },
     { id: 'disaster-14', name: 'Konflik Sosial' },
     { id: 'disaster-15', name: 'Aksi Teror' },
     { id: 'disaster-16', name: 'Sabotase' },
@@ -178,18 +197,18 @@ export const Request = () => {
                         min="1"
                         value={item.quantity}
                         onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                        className="mt-1 block w-full rounded -md bg-white border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Satuan</label>
+                      <label className="block text-sm font-medium text-gray-700">Unit</label>
                       <select
                         value={item.unitId}
                         onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white"
                       >
-                        <option value="" disabled>Pilih Satuan</option>
+                        <option value="" disabled>Pilih Unit</option>
                         {UNITS.map(unit => (
                           <option key={unit.id} value={unit.id}>
                             {unit.label}
@@ -199,41 +218,38 @@ export const Request = () => {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-2">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700">Deskripsi Barang</label>
-                    <textarea
+                    <input
+                      type="text"
                       value={item.description}
                       onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                      rows={2}
-                      className="mt-1 block w-full rounded-md bg-white border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     />
                   </div>
-                </div>
 
-                {requestItems.length > 1 && (
                   <button
                     type="button"
                     onClick={() => handleRemoveItem(index)}
-                    className="mt-2 inline-flex items-center text-sm text-red-600 hover:text-red-800"
+                    className="absolute top-0 right-0 mt-2 mr-2 text-red-600"
                   >
-                    <TrashIcon className="h-4 w-4 mr-1" />
-                    Hapus
+                    <TrashIcon className="h-5 w-5" />
                   </button>
-                )}
+                </div>
               </div>
             ))}
           </div>
 
-          <div className="pt-4">
-            <button
-              type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Kirim Permintaan
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Kirim Permintaan
+          </button>
         </form>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };

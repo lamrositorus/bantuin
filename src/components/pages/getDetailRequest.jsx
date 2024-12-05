@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 const CATEGORIES = [
   { id: 'category-1', label: 'Makanan' },
   { id: 'category-2', label: 'Minuman' },
@@ -80,15 +82,31 @@ export const GetDetail = () => {
   }, [id]);
 
   const handleUpdate = async () => {
-    try {
-      const response = await APISource.updateRequest(id, requestDetail.disaster_id, updatedDescription, updatedItems);
-      console.log('Update Response:', response);
-
-    } catch (err) {
-      console.error('Error updating request:', err.message);
-      setError(err.message);
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: "Data ini akan diperbarui!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Perbarui',
+      cancelButtonText: 'Batal',
+      reverseButtons: true,
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        const response = await APISource.updateRequest(id, requestDetail.disaster_id, updatedDescription, updatedItems);
+        console.log('Update Response:', response);
+        Swal.fire('Diperbarui!', 'Permintaan bantuan telah diperbarui.', 'success');
+        setEditing(false); // Menyembunyikan mode edit setelah update
+      } catch (err) {
+        setError(err.message);
+        Swal.fire('Error!', 'Terjadi kesalahan saat memperbarui data.', 'error');
+      }
+    } else {
+      Swal.fire('Batal', 'Pembaharuan data dibatalkan', 'info');
     }
   };
+  
   
   
   
@@ -109,14 +127,27 @@ export const GetDetail = () => {
   };
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this request?');
-    if (confirmDelete) {
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: "Data ini akan dihapus!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Hapus',
+      cancelButtonText: 'Batal',
+      reverseButtons: true,
+    });
+  
+    if (result.isConfirmed) {
       try {
         await APISource.deleteRequest(id);
         navigate('/request');
+        Swal.fire('Dihapus!', 'Permintaan bantuan telah dihapus.', 'success');
       } catch (err) {
         setError(err.message);
+        Swal.fire('Error!', 'Terjadi kesalahan saat menghapus data.', 'error');
       }
+    } else {
+      Swal.fire('Batal', 'Penghapusan data dibatalkan', 'info');
     }
   };
 
