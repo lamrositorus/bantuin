@@ -7,4 +7,8 @@ export const API_ENDPOINT = {
     profile: (userId) => `${CONFIG.BASE_URL}/users/${userId}`,
     updateProfile: (id) => `${CONFIG.BASE_URL}/users/${id}`,
     request: `${CONFIG.BASE_URL}/requests`,
+    getRequest: (id) => `${CONFIG.BASE_URL}/requests/${id}`,
+    getAllRequest: `${CONFIG.BASE_URL}/requests`,
+    deleteRequest: (id) => `${CONFIG.BASE_URL}/requests/${id}`,
+    updateRequest: (id) => `${CONFIG.BASE_URL}/requests/${id}`,
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
-
+import profil from '../../../dist/assets/profile-BVt0Jl69.png'
 const validatePhoneNumber = (phone) => {
     const phoneRegex = /^(?:\+62|62|0)[2-9][0-9]{8,12}$/;
     return phoneRegex.test(phone);
@@ -144,7 +144,7 @@ export const Profile = () => {
           <div className="relative group">
             <img
               className="w-32 h-32 md:w-40 md:h-40 rounded-2xl border-4 border-gray-100 object-cover transition-transform hover:scale-105"
-              src={profile.profilePicture || '../src/assets/profile.png'}
+              src={profile.profilePicture || `${profil}`}
               alt="Profile"
             />
             {isEditing && (

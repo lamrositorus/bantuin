@@ -152,9 +152,45 @@ export class APISource {
 
     //request
     static async addNewRequest(disasterId, description, requestItems) {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem("accessToken");
         const response = await fetch(API_ENDPOINT.request, {
-            method: 'POST',
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            disasterId,
+            description,
+            requestItems: requestItems.map((item) => ({
+              categoryId: item.categoryId,
+              quantity: item.quantity,
+              unitId: item.unitId,
+              description: item.description,
+            })),
+          }),
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Gagal menambahkan permintaan");
+        }
+    
+        const responseJson = await response.json();
+        const requestId = responseJson.data.requestId;
+    
+        // Update localStorage
+        let requestIds = JSON.parse(localStorage.getItem("requestIds")) || [];
+        requestIds.push(requestId);
+        localStorage.setItem("requestIds", JSON.stringify(requestIds));
+    
+        return requestId;
+      }    
+    static async updateRequest(id, disasterId, description, requestItems) {
+        const token = localStorage.getItem('accessToken');
+        const response = await fetch(API_ENDPOINT.updateRequest(id), {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -164,20 +200,67 @@ export class APISource {
                 disasterId,
                 description,
                 requestItems: requestItems.map(item => ({
-                    categoryId: item.categoryId,
+                    categoryId: item.category_id,
                     quantity: item.quantity,
-                    unitId: item.unitId,
+                    unitId: item.unit_id,
                     description: item.description
                 }))
             }),
         });
-    
+        console.log('request:',requestItems)
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Gagal menambahkan permintaan');
+            throw new Error(errorData.message || 'Gagal memperbarui permintaan');
+        }
+
+        return await response.json();
+    }
+
+    static async deleteRequest(id) {
+        const token = localStorage.getItem('accessToken');
+        const response = await fetch(API_ENDPOINT.deleteRequest(id), {
+            method: 'DELETE',
+            headers: {                
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Gagal menghapus permintaan');
+        }
+
+        return await response.json();
+    }
+    static async getRequestById(id) {
+        const response = await fetch(API_ENDPOINT.getRequest(id), {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Gagal mendapatkan permintaan");
         }
     
         return await response.json();
-    }
+      }
+      static async getAllRequests() {
+        const response = await fetch(API_ENDPOINT.getAllRequest, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },          
+        })
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Gagal mendapatkan permintaan");
+        }
+
+        return await response.json();
+      }
     
 }

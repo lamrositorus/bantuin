@@ -12,6 +12,16 @@ export const Request = () => {
     description: ''
   }]);
 
+  const clearForm = () => {
+    setDisasterId('');
+    setDescription('');
+    setRequestItems([{
+      categoryId: '',
+      quantity: 1,
+      unitId: '',
+      description: ''
+    }]);
+  };
   const handleAddItem = () => {
     setRequestItems([...requestItems, {
       categoryId: '',
@@ -34,49 +44,88 @@ export const Request = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!disasterId || !description || requestItems.some(item => !item.categoryId || !item.unitId || !item.description || item.quantity <= 0)) {
+      alert("Silakan lengkapi semua field yang diperlukan.");
+      return;
+    }
+    
     try {
       const response = await APISource.addNewRequest(disasterId, description, requestItems);
-      console.log(response);
+      console.log('response api: ',response);
+      clearForm();
       // Handle success - tambahkan toast notification
     } catch (error) {
       console.error(error);
       // Handle error - tambahkan toast notification
     }
   };
+
   const CATEGORIES = [
-    { id: 'FOOD', label: 'Makanan' },
-    { id: 'CLOTHES', label: 'Pakaian' },
-    { id: 'MEDICAL', label: 'Obat-obatan' },
-    { id: 'SHELTER', label: 'Tempat Berlindung' },
-    { id: 'HYGIENE', label: 'Perlengkapan Kebersihan' },
-    { id: 'BABY', label: 'Perlengkapan Bayi' },
-    { id: 'ELDERLY', label: 'Perlengkapan Lansia' },
-    { id: 'EDUCATION', label: 'Perlengkapan Pendidikan' }
+    { id: 'category-1', label: 'Makanan' },
+    { id: 'category-2', label: 'Minuman' },
+    { id: 'category-3', label: 'Pakaian' },
+    { id: 'category-4', label: 'Obat-obatan' },
+    { id: 'category-5', label: 'Perlengkapan Bayi' },
+    { id: 'category-6', label: 'Perlengkapan Kebersihan' },
+    { id: 'category-7', label: 'Perlengkapan Tidur' },
+    { id: 'category-8', label: 'Perlengkapan Dapur' },
+    { id: 'category-9', label: 'Perlengkapan Medis' },
+    { id: 'category-10', label: 'Alat Tulis' },
+    { id: 'category-11', label: 'Lainnya' },
   ];
-  
+
+  const DISASTERS = [
+    { id: 'disaster-1', name: 'Gempa Bumi' },
+    { id: 'disaster-2', name: 'Letusan Gunung Api' },
+    { id: 'disaster-3', name: 'Tsunami' },
+    { id: 'disaster-4', name: 'Tanah Longsor' },
+    { id: 'disaster-5', name: 'Banjir' },
+    { id: 'disaster-6', name: 'Banjir Bandang' },
+    { id: 'disaster-7', name: 'Kekeringan' },
+    { id: 'disaster-8', name: 'Kebakaran' },
+    { id: 'disaster-9', name: 'Kebakaran Hutan' },
+    { id: 'disaster-10', name: 'Angin Puting Beliung' },
+    { id: 'disaster-11', name: 'Gelombang Pasang atau Badai' },
+    { id: 'disaster-12', name: 'Kecelakaan transportasi' },
+    { id: 'dis aster-13', name: 'Kecelakaan Industri' },
+    { id: 'disaster-14', name: 'Konflik Sosial' },
+    { id: 'disaster-15', name: 'Aksi Teror' },
+    { id: 'disaster-16', name: 'Sabotase' },
+    { id: 'disaster-17', name: 'Lainnya' }
+  ];
+
   const UNITS = [
-    { id: 'KG', label: 'Kilogram (kg)' },
-    { id: 'PCS', label: 'Pieces (pcs)' },
-    { id: 'BOX', label: 'Box' },
-    { id: 'PACK', label: 'Pack' },
-    { id: 'DOZEN', label: 'Lusin' },
-    { id: 'SET', label: 'Set' },
-    { id: 'LITER', label: 'Liter (L)' },
-    { id: 'METER', label: 'Meter (m)' }
+    { id: 'unit-1', label: 'Pcs' },
+    { id: 'unit-2', label: 'Kg' },
+    { id: 'unit-3', label: 'Liter' },
+    { id: 'unit-4', label: 'Gram' },
+    { id: 'unit-5', label: 'Box' },
+    { id: 'unit-6', label: 'Karton' },
+    { id: 'unit-7', label: 'Pack' },
+    { id: 'unit-8', label: 'Lusin' },
+    { id: 'unit-9', label: 'Set' },
+    { id: 'unit-10', label: 'Lainnya' },
   ];
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen pt-20 bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-8">Buat Permintaan Bantuan</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">ID Bencana</label>
-            <input
-              type="text"
+            <select
               value={disasterId}
               onChange={(e) => setDisasterId(e.target.value)}
               className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
+            >
+              <option value="" disabled>Pilih Bencana</option>
+              {DISASTERS.map(disaster => (
+                <option key={disaster.id} value={disaster.id}>
+                  {disaster.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -108,28 +157,28 @@ export const Request = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Kategori</label>
                     <select
-                    value={item.categoryId}
-                    onChange={(e) => handleItemChange(index, 'categoryId', e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white"
-                  >
-                    <option value="" disabled>Pilih Kategori</option>
-                    {CATEGORIES.map(category => (
-                      <option key={category.id} value={category.id}>
-                        {category.label}
-                      </option>
-                    ))}
-                  </select>
+                      value={item.categoryId}
+                      onChange={(e) => handleItemChange(index, 'categoryId', e.target.value)}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white"
+                    >
+                      <option value="" disabled>Pilih Kategori</option>
+                      {CATEGORIES.map(category => (
+                        <option key={category.id} value={category.id}>
+                          {category.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium  text-gray-700">Jumlah</label>
+                      <label className="block text-sm font-medium text-gray-700">Jumlah</label>
                       <input
                         type="number"
                         min="1"
                         value={item.quantity}
                         onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                        className="mt-1 block w-full rounded-md bg-white border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded -md bg-white border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       />
                     </div>
 

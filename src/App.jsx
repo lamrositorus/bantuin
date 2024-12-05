@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {Route, Routes} from 'react-router-dom'
 import { Navbar } from './components/Navbar'
-import {About, Home, Login, Signup, Profile, Request} from './components/pages'
+import {About, Home, Login, Signup, Profile, Request, GetAllRequest, GetDetail} from './components/pages'
 
 const App = () => {
   
@@ -23,6 +23,8 @@ const handleLogout = () => {
         <Route path="/Login" element={<Login onLogin={handleLogin}/>}/>
         <Route path="/Signup" element={<Signup/>}/>
         <Route path="/Request" element={<Request/>}/>
+        <Route path="/getRequest/:id" element={<GetDetail/>}/>
+        <Route path="/allRequest" element={<GetAllRequest/>}/>
         <Route path="/Profile/:userId" element={<Profile/>}/>
 
       </Routes>
