@@ -113,8 +113,8 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
             disabled={isLoading} // Disable tombol saat loading
             className={`block px-5 py-2 font-medium rounded-lg w-full text-left transition-all ${
                 isDarkMode
-                    ? 'text-gray-700 hover:bg-red-500 text-white '
-                    : 'text-gray-700  hover:bg-red-500 text-white'
+                    ? 'text-gray-700 hover:bg-red-500  '
+                    : 'text-gray-700  hover:bg-red-500'
             } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`} // Gaya tombol saat disable
         >
             {isLoading ? (
