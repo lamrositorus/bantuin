@@ -47,7 +47,6 @@ export const Request = ({ isDarkMode }) => {
     const newItems = [...requestItems];
     newItems[index][field] = field === 'quantity' ? parseInt(value) : value;
     setRequestItems(newItems);
-    toast.success('Data berhasil diubah');
   };
 
   const handleSubmit = async (event) => {

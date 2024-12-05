@@ -1,5 +1,5 @@
 import { useState } from 'react'; 
-import { Link, NavLink } from 'react-router-dom'; 
+import { Link, NavLink, useNavigate } from 'react-router-dom'; 
 import { APISource } from '../data/source-api'; 
 import { FaHandsHelping } from 'react-icons/fa'; 
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
@@ -7,6 +7,8 @@ import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => { 
     const [menuOpen, setMenuOpen] = useState(false);
     const userId = localStorage.getItem('userId');
+    const navigate = useNavigate();
+        const [isLoading, setIsLoading] = useState(false); // State untuk loading
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
@@ -18,7 +20,8 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('userId');
-            if (onLogout) onLogout();
+            onLogout();
+            navigate('/login')
         } catch (error) {
             console.error('Error during logout:', error);
         }
@@ -105,11 +108,23 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
         </NavLink>
     </li>
     <li>
-        <button
+    <button
             onClick={handleLogout}
-            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`}
+            disabled={isLoading} // Disable tombol saat loading
+            className={`block px-5 py-2 font-medium rounded-lg w-full text-left transition-all ${
+                isDarkMode
+                    ? 'text-gray-700 hover:bg-red-500 text-white '
+                    : 'text-gray-700  hover:bg-red-500 text-white'
+            } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`} // Gaya tombol saat disable
         >
-            Logout
+            {isLoading ? (
+                <div className="flex items-center gap-2">
+                    <span className="loader"></span> {/* Tambahkan loader */}
+                    Logging out...
+                </div>
+            ) : (
+                'Logout'
+            )}
         </button>
     </li>
 </ul>

@@ -16,7 +16,6 @@ const App = () => {
   return (
     <div className={`w-full h-full ${isDarkMode ? 'bg-gray-900' : 'bg-slate-100'}`}>
       <Navbar isLoggedIn={isLoggedIn} onLogout={logout} toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
-      <ToastContainer />
       <Routes>
         <Route path="/" element={<Login onLogin={login} isDarkMode={isDarkMode} />} />
         <Route path="/home" element={<Home isDarkMode={isDarkMode} />} />
@@ -29,6 +28,7 @@ const App = () => {
         <Route path="/profile/:userId" element={<Profile isDarkMode={isDarkMode} />} />
       </Routes>
       {isLoggedIn && <Footer isDarkMode={isDarkMode} />}
+      <ToastContainer />
     </div>
   );
 };

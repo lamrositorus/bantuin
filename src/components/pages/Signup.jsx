@@ -29,7 +29,7 @@ export const Signup = () => {
       const {userId} = await APISource.register(namaLengkap, email, password, telepon, jenisKelamin, alamat);
       console.log(userId);
       if (userId) {
-        alert('Pendaftaran berhasil');
+        toast.success('Pendaftaran berhasil');
         navigate('/login');
         localStorage.setItem('userId', userId);
         toast.success('Pendaftaran berhasil');
