@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom'; 
 import { APISource } from '../data/source-api'; 
 import { FaHandsHelping } from 'react-icons/fa'; // Import an icon
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 
-export const Navbar = ({ isLoggedIn, onLogout }) => { 
+export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => { 
     const [menuOpen, setMenuOpen] = useState(false);
     const userId = localStorage.getItem('userId');
 
@@ -28,7 +29,7 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
     }
 
     return (
-        <header className="fixed top-0 left-0 w-full bg-gradient-to-r backdrop-blur-md from-orange-400 to-orange-600 shadow-lg z-50 transition-all duration-300">
+        <header className={`fixed top-0 left-0 w-full ${isDarkMode ? 'bg-gray-800' : 'bg-gradient-to-r from-orange-400 to-orange-600'} backdrop-blur-md shadow-lg z-50 transition-all duration-300`}>
             <nav className="container mx-auto flex items-center justify-between p-4">
                 <Link className="flex items-center text-3xl font-extrabold text-white hover:text-yellow-300 transition-colors duration-300" to="/home">
                     <FaHandsHelping className="text-yellow-300 mr-2 transform transition-transform duration-300 hover:scale-110" />
@@ -42,11 +43,19 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                     onClick={toggleMenu}
                 >
                     <div className="flex flex-col gap-1.5 relative w-6 h-5">
-                        <div className={`w-6 h-0.5 bg-gray-700 rounded-full absolute transition-all duration-300 ${menuOpen ? 'top-2 rotate-45' : 'top-0'}`}></div>
-                        <div className={`w-6 h-0.5 bg-gray-700 rounded-full absolute top-2 transition-all duration-300 ${menuOpen ? 'opacity-0 translate-x-2' : 'opacity-100'}`}></div>
-                        <div className={`w-6 h-0.5 bg-gray-700 rounded-full absolute transition-all duration-300 ${menuOpen ? 'top-2 -rotate-45' : 'top-4'}`}></div>
+                        <div className={`w-6 h-0.5 ${isDarkMode ? 'bg-white' : 'bg-gray-700'} rounded-full absolute transition-all duration-300 ${menuOpen ? 'top-2 rotate-45' : 'top-0'}`}></div>
+                        <div className={`w-6 h-0.5 ${isDarkMode ? 'bg-white' : 'bg-gray-700'} rounded-full absolute top-2 transition-all duration-300 ${menuOpen ? 'opacity-0 translate-x-2' : 'opacity-100'}`}></div>
+                        <div className={`w-6 h-0.5 ${isDarkMode ? 'bg-white' : 'bg-gray-700'} rounded-full absolute transition-all duration-300 ${menuOpen ? 'top-2 -rotate-45' : 'top-4'}`}></div>
                     </div>
                 </div>
+
+                <button onClick={toggleTheme} className={`flex items-center justify-center p-2 rounded-full transition-colors duration-300 ${isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-300 hover:bg-gray-400'}`}>
+                    {isDarkMode ? (
+                        <SunIcon className="h-6 w-6 text-yellow-300"  />
+                    ) : (
+                        <MoonIcon className="h-6 w-6 text-gray-800" />
+                    )}
+                </button>
 
                 <ul
                     className={`absolute md:static md:bg-transparent w-full md:w-auto transition-all left-0 duration-300 ease-in-out ${
@@ -60,7 +69,7 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                                 `block px-5 py-2 font-medium rounded-lg transition-all ${
                                     isActive
                                         ? 'bg-yellow-50 text-orange-500'
-                                        : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'
+                                        : `${isDarkMode ? 'text-gray-300' : 'text-gray-700'} hover:bg-yellow-50 hover:text-orange-500`
                                 }`
                             }
                         >
@@ -70,52 +79,29 @@ export const Navbar = ({ isLoggedIn, onLogout }) => {
                     <li>
                         <Link
                             to="/allrequest"
-                            className="block px-5 py-2 font-medium rounded-lg text-gray-700 hover:bg-yellow-50 hover:text-orange-500 transition-all"
+                            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange -500'}`}
                         >
-                            My Request
+                            All Requests
                         </Link>
                     </li>
                     <li>
-                        <NavLink
-                            to="/about"
-                            className={({ isActive }) =>
-                                `block px-5 py-2 font-medium rounded-lg transition-all ${
-                                    isActive
-                                        ? 'bg-yellow-50 text-orange-500'
-                                        : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'
-                                }`
-                            }
-                        >
-                            About
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
+                        <Link
                             to={`/profile/${userId}`}
-                            className={({ isActive }) =>
-                                `block px-5 py-2 font-medium rounded-lg transition-all ${
-                                    isActive
-                                        ? 'bg-yellow-50 text-orange-500'
-                                        : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'
-                                }`
-                            }
+                            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`}
                         >
                             Profile
-                        </NavLink>
+                        </Link>
                     </li>
                     <li>
-                        <NavLink
-                            to="/login"
+                        <button
                             onClick={handleLogout}
-                            className="block px-5 py-2 text-gray-700 font-medium rounded-lg hover:bg-red-50 hover:text-red-500 transition-all"
+                            className={`block px-5 py-2 font-medium rounded-lg transition-all ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`}
                         >
                             Logout
-                        </NavLink>
+                        </button>
                     </li>
                 </ul>
             </nav>
         </header>
     );
 };
-
-export default Navbar;

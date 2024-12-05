@@ -4,7 +4,7 @@ import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { toast, ToastContainer } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-export const Request = () => {
+export const Request = ({ isDarkMode }) => {
   const [disasterId, setDisasterId] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,6 @@ export const Request = () => {
       unitId: '',
       description: ''
     }]);
-    
   };
 
   const handleRemoveItem = (index) => {
@@ -110,7 +109,7 @@ export const Request = () => {
   const DISASTERS = [
     { id: 'disaster-1', name: 'Gempa Bumi' },
     { id: 'disaster-2', name: 'Letusan Gunung Api' },
-    { id: 'disaster-3', name: 'Tsunami' },
+ { id: 'disaster-3', name: 'Tsunami' },
     { id: 'disaster-4', name: 'Tanah Longsor' },
     { id: 'disaster-5', name: 'Banjir' },
     { id: 'disaster-6', name: 'Banjir Bandang' },
@@ -141,16 +140,16 @@ export const Request = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">Buat Permintaan Bantuan</h2>
+    <div className={`min-h-screen pt-20 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'} py-12 px-4 sm:px-6 lg:px-8`}>
+      <div className={`max-w-3xl mx-auto rounded-xl shadow-lg p-6 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+        <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-gray-300' : 'text-gray-900'} mb-8`}>Buat Permintaan Bantuan</h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700">ID Bencana</label>
+            <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>ID Bencana</label>
             <select
               value={disasterId}
               onChange={(e) => setDisasterId(e.target.value)}
-              className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-white'}`}
             >
               <option value="" disabled>Pilih Bencana</option>
               {DISASTERS.map(disaster => (
@@ -162,22 +161,22 @@ export const Request = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Deskripsi Umum</label>
+            <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Deskripsi Umum</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-white'}`}
             />
           </div>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Daftar Barang yang Dibutuhkan</h3>
+              <h3 className={`text-lg font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-900'}`}>Daftar Barang yang Dibutuhkan</h3>
               <button
                 type="button"
                 onClick={handleAddItem}
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800"
+                className={`inline-flex items-center px-4 py -2 text-sm font-medium text-blue-600 hover:text-blue-800 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}
               >
                 <PlusCircleIcon className="h-5 w-5 mr-2" />
                 Tambah Barang
@@ -185,14 +184,14 @@ export const Request = () => {
             </div>
 
             {requestItems.map((item, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded-lg">
+              <div key={index} className={`bg-gray-50 p-4 rounded-lg ${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Kategori</label>
+                    <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Kategori</label>
                     <select
                       value={item.categoryId}
                       onChange={(e) => handleItemChange(index, 'categoryId', e.target.value)}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${isDarkMode ? 'bg-gray-600 text-gray-300' : 'bg-white'}`}
                     >
                       <option value="" disabled>Pilih Kategori</option>
                       {CATEGORIES.map(category => (
@@ -204,21 +203,21 @@ export const Request = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Jumlah</label>
+                    <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Jumlah</label>
                     <input
                       type="number"
                       value={item.quantity}
                       onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${isDarkMode ? 'bg-gray-600 text-gray-300' : 'bg-white'}`}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Satuan</label>
+                    <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Satuan</label>
                     <select
                       value={item.unitId}
                       onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${isDarkMode ? 'bg-gray-600 text-gray-300' : 'bg-white'}`}
                     >
                       <option value="" disabled>Pilih Satuan</option>
                       {UNITS.map(unit => (
@@ -230,12 +229,12 @@ export const Request = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Deskripsi</label>
                     <input
                       type="text"
                       value={item.description}
                       onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                      className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${isDarkMode ? 'bg-gray-600 text-gray-300' : 'bg-white'}`}
                     />
                   </div>
                 </div>
@@ -244,7 +243,7 @@ export const Request = () => {
                   <button
                     type="button"
                     onClick={() => handleRemoveItem(index)}
-                    className="inline-flex items-center text-sm text-red-500 hover:text-red-700"
+                    className={`inline-flex items-center text-sm ${isDarkMode ? 'text-red-400 hover:text-red-600' : 'text-red-500 hover:text-red-700'}`}
                   >
                     <TrashIcon className="h-5 w-5 mr-2" />
                     Hapus Barang
@@ -261,10 +260,10 @@ export const Request = () => {
               className={`w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {loading ? (
-              <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-              Kirim Permintaan
-            </div>
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2 "></div>
+                  Kirim Permintaan
+                </div>
               ) : (
                 'Kirim Permintaan'
               )}
