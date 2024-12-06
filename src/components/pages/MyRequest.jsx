@@ -44,7 +44,7 @@ export const MyRequest = ({ isDarkMode }) => {
             to="/request"
             className={`inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
           >
-            + Request Donasi
+            + Relief Request
           </Link>
         </div>
 

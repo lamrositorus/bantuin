@@ -286,5 +286,34 @@ export class APISource {
         }
       }
       
+      static async postDonation(requestId, donationItems, description) {
+        try {
+            const token = localStorage.getItem("accessToken");
+          const response = await fetch(API_ENDPOINT.donation, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              requestId: requestId,
+              descriptions: description,
+              donationItems: donationItems, // Array of items with requestItemId, quantity, and descriptions
+            }),
+          });
+      
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Gagal menambahkan donasi");
+          }
+      
+          return await response.json(); // Return response if needed
+        } catch (error) {
+          console.error("Error while posting donation:", error);
+          throw error;
+        }
+      }
+      
     
 }

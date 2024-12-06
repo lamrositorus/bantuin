@@ -16,6 +16,7 @@ export const GetAllRequest = ({ isDarkMode }) => {
     const fetchRequests = async () => {
       try {
         const data = await APISource.getAllRequests(); // API call
+        console.log('Fetched Data:', data);
         if (data && data.status === 'success') {
           setRequests(data.data.requests); // Update state with requests
         } else {
@@ -37,14 +38,7 @@ export const GetAllRequest = ({ isDarkMode }) => {
     <div className={`pt-20 min-h-screen flex items-center justify-center p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className={`w-full max-w-6xl p-6 rounded-lg shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <h1 className={`text-3xl font-bold text-center mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>All Requests</h1>
-        <div className="text-right mb-4">
-          <Link 
-            to="/request"
-            className={`inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
-          >
-            + Request Donasi
-          </Link>
-        </div>
+
 
         {loading ? (
           <div className="flex justify-center items-center space-x-3">
@@ -95,12 +89,16 @@ export const GetAllRequest = ({ isDarkMode }) => {
                       <ul className="space-y-2 mt-2">
                         {request.items.map((item , index) => (
                           <li key={index} className={`flex items-center justify-between ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                            <div className="flex items-center">
-                              <FaBox className={`text-gray-600 mr-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} /> {/* Icon for each item */}
-                              <span>{item.description}</span>
-                            </div>
-                            <span className="font-semibold">{item.quantity} {item.unitId}</span>
-                          </li>
+                          <div className="flex items-center">
+                            <FaBox className={`text-gray-600 mr-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} /> {/* Icon for each item */}
+                            <span>{item.description}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <span className="font-semibold">{item.quantity}</span>
+                            <span className="font-semibold">{item.unit_name}</span>
+                          </div>
+                        </li>
+                        
                         ))}
                       </ul>
                     </div>

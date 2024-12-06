@@ -55,7 +55,7 @@ const UNITS = [
   { id: 'unit-10', label: 'Lainnya' },
 ];
 
-export const GetDetailMyRequest = () => {
+export const GetDetailMyRequest = ({isDarkMode}) => {
   const { id } = useParams();
   const [requestDetail, setRequestDetail] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -174,29 +174,43 @@ export const GetDetailMyRequest = () => {
   }
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">{editing ? 'Edit Permintaan Bantuan' : 'Detail Permintaan Bantuan'}</h2>
+    <div
+      className={`min-h-screen pt-20 ${
+        isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'
+      } py-12 px-4 sm:px-6 lg:px-8`}
+    >
+      <div
+        className={`max-w-3xl mx-auto ${
+          isDarkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'
+        } rounded-xl shadow-lg p-6`}
+      >
+        <h2 className="text-2xl font-bold mb-8">
+          {editing ? 'Edit Permintaan Bantuan' : 'Detail Permintaan Bantuan'}
+        </h2>
         {loading ? (
           <div className="flex justify-center items-center space-x-3">
-            <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-            <span className="text-gray-600">Loading...</span>
+            <FaSpinner className="animate-spin text-3xl" />
+            <span>Loading...</span>
           </div>
         ) : error ? (
-          <div className="text-center text-red-600 flex justify-center items-center space-x-2">
-            <FaExclamationCircle className="text-red-600 text-3xl" />
+          <div className="text-center flex justify-center items-center space-x-2">
+            <FaExclamationCircle className="text-3xl text-red-500" />
             <p className="text-lg">{error}</p>
           </div>
         ) : (
           <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700">ID Bencana</label>
+              <label className="block text-sm font-medium">ID Bencana</label>
               <select
                 value={requestDetail.disaster_id}
                 disabled={!editing}
-                className="mt-1 block bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`mt-1 block w-full rounded-md shadow-sm ${
+                  isDarkMode
+                    ? 'bg-gray-700 border-gray-600 focus:border-blue-400 focus:ring-blue-400'
+                    : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                }`}
               >
-                {DISASTERS.map(disaster => (
+                {DISASTERS.map((disaster) => (
                   <option key={disaster.id} value={disaster.id}>
                     {disaster.name}
                   </option>
@@ -205,19 +219,23 @@ export const GetDetailMyRequest = () => {
             </div>
   
             <div>
-              <label className="block text-sm font-medium text-gray-700">Deskripsi Umum</label>
+              <label className="block text-sm font-medium">Deskripsi Umum</label>
               <textarea
                 value={updatedDescription}
                 onChange={(e) => setUpdatedDescription(e.target.value)}
                 rows={3}
                 disabled={!editing}
-                className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className={`mt-1 block w-full rounded-md shadow-sm ${
+                  isDarkMode
+                    ? 'bg-gray-700 border-gray-600 focus:border-blue-400 focus:ring-blue-400'
+                    : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                }`}
               />
             </div>
   
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium text-gray-900">Daftar Barang yang Dibutuhkan</h3>
+                <h3 className="text-lg font-medium">Daftar Barang yang Dibutuhkan</h3>
                 {editing && (
                   <button
                     type="button"
@@ -231,17 +249,26 @@ export const GetDetailMyRequest = () => {
               </div>
   
               {updatedItems.map((item, index) => (
-                <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                <div
+                  key={index}
+                  className={`p-4 rounded-lg ${
+                    isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+                  }`}
+                >
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Kategori</label>
+                      <label className="block text-sm font-medium">Kategori</label>
                       <select
                         value={item.categoryId}
                         onChange={(e) => handleItemChange(index, 'categoryId', e.target.value)}
                         disabled={!editing}
-                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={`mt-1 block w-full rounded-md shadow-sm ${
+                          isDarkMode
+                            ? 'bg-gray-700 border-gray-600 focus:border-blue-400 focus:ring-blue-400'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                        }`}
                       >
-                        {CATEGORIES.map(category => (
+                        {CATEGORIES.map((category) => (
                           <option key={category.id} value={category.id}>
                             {category.label}
                           </option>
@@ -250,25 +277,33 @@ export const GetDetailMyRequest = () => {
                     </div>
   
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Jumlah</label>
+                      <label className="block text-sm font-medium">Jumlah</label>
                       <input
                         type="number"
                         value={item.quantity}
                         onChange={(e) => handleItemChange(index, 'quantity', e.target.value)}
                         disabled={!editing}
-                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={`mt-1 block w-full rounded-md shadow-sm ${
+                          isDarkMode
+                            ? 'bg-gray-700 border-gray-600 focus:border-blue-400 focus:ring-blue-400'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                        }`}
                       />
                     </div>
   
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Satuan</label>
+                      <label className="block text-sm font-medium">Satuan</label>
                       <select
                         value={item.unitId}
                         onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
                         disabled={!editing}
-                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={`mt-1 block w-full rounded-md shadow-sm ${
+                          isDarkMode
+                            ? 'bg-gray-700 border-gray-600 focus:border-blue-400 focus:ring-blue-400'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                        }`}
                       >
-                        {UNITS.map(unit => (
+                        {UNITS.map((unit) => (
                           <option key={unit.id} value={unit.id}>
                             {unit.label}
                           </option>
@@ -277,13 +312,17 @@ export const GetDetailMyRequest = () => {
                     </div>
   
                     <div className="sm:col-span-2">
-                      <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
+                      <label className="block text-sm font-medium">Deskripsi</label>
                       <textarea
                         value={item.description}
                         onChange={(e) => handleItemChange(index, 'description', e.target.value)}
                         disabled={!editing}
                         rows={2}
-                        className="mt-1 block w-full bg-white rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={`mt-1 block w-full rounded-md shadow-sm ${
+                          isDarkMode
+                            ? 'bg-gray-700 border-gray-600 focus:border-blue-400 focus:ring-blue-400'
+                            : 'bg-white border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+                        }`}
                       />
                     </div>
                   </div>
@@ -307,7 +346,7 @@ export const GetDetailMyRequest = () => {
                   <button
                     type="button"
                     onClick={handleUpdate}
-                    disabled={loading} // Disable button when loading
+                    disabled={loading}
                     className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
                   >
                     {loading ? (
@@ -353,6 +392,7 @@ export const GetDetailMyRequest = () => {
       <ToastContainer />
     </div>
   );
+  
   
   
 

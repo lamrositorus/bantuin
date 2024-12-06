@@ -12,4 +12,5 @@ export const API_ENDPOINT = {
     deleteRequest: (id) => `${CONFIG.BASE_URL}/requests/${id}`,
     updateRequest: (id) => `${CONFIG.BASE_URL}/requests/${id}`,
     getUserbyOwner:`${CONFIG.BASE_URL}/requests/owner`, 
+    donation: `${CONFIG.BASE_URL}/donations`,
 }

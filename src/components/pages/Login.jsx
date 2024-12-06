@@ -26,7 +26,7 @@ export const Login = ({ onLogin, isDarkMode }) => {
         console.log('Login berhasil:', data);
         onLogin();
         toast.success('Login berhasil');
-        navigate('/allrequest');
+        navigate('/beranda');
       } else {
         alert(data.message || 'Login gagal');
       }
