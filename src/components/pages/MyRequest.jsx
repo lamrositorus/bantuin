@@ -4,20 +4,20 @@ import { APISource } from '../../data/source-api'; // Import API function
 import { Link } from 'react-router-dom';
 
 // Main Component
-export const GetAllRequest = ({ isDarkMode }) => {
+export const MyRequest = ({ isDarkMode }) => {
   const [requests, setRequests] = useState([]); // State to hold requests
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [error, setError] = useState(null); // State for error handling
   const [isExpanded, setIsExpanded] = useState(false);
-  const maxDescriptionLength = 70; // Panjang teks sebelum dipotong
+  const maxDescriptionLength = 70; // Max length of description before truncating
 
   // Fetch requests data when the component mounts
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const data = await APISource.getAllRequests(); // API call
+        const data = await APISource.getUserByOwner(); // API call for user's own requests
         if (data && data.status === 'success') {
-          setRequests(data.data.requests); // Update state with requests
+          setRequests(data.data.requests); // Update state with user's requests
         } else {
           setError('No data available'); // Handle unexpected response
         }
@@ -30,13 +30,15 @@ export const GetAllRequest = ({ isDarkMode }) => {
 
     fetchRequests();
   }, []); // Empty dependency array ensures this runs once when the component mounts
+  
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
   };
+
   return (
     <div className={`pt-20 min-h-screen flex items-center justify-center p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className={`w-full max-w-6xl p-6 rounded-lg shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <h1 className={`text-3xl font-bold text-center mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>All Requests</h1>
+        <h1 className={`text-3xl font-bold text-center mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>My Requests</h1>
         <div className="text-right mb-4">
           <Link 
             to="/request"
@@ -61,22 +63,23 @@ export const GetAllRequest = ({ isDarkMode }) => {
             {requests.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {requests.map((request) => (
-                  <div key={request.id} className={`p-4 rounded-lg  shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300 flex flex-col ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-800'}`}>
+                  <div key={request.id} className={`p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300 flex flex-col ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-800'}`}>
                     <h1 className="text-2xl mt-1"><span className="font-semibold">{request.disaster_name}</span></h1>
 
                     <h2 className="text-base font-medium">
-                            {isExpanded || request.description.length <= maxDescriptionLength
-                              ? request.description
-                              : `${request.description.slice(0, maxDescriptionLength)}...`}
-                          </h2>
-                          {request.description.length > maxDescriptionLength && (
-                            <button
-                              onClick={toggleDescription}
-                              className="mt-2 text-sm font-semibold text-blue-500 hover:underline focus:outline-none"
-                            >
-                              {isExpanded ? "Lihat Lebih Sedikit" : "Lihat Selengkapnya"}
-                            </button>
-                          )}                    
+                      {isExpanded || request.description.length <= maxDescriptionLength
+                        ? request.description
+                        : `${request.description.slice(0, maxDescriptionLength)}...`}
+                    </h2>
+                    {request.description.length > maxDescriptionLength && (
+                      <button
+                        onClick={toggleDescription}
+                        className="mt-2 text-sm font-semibold text-blue-500 hover:underline focus:outline-none"
+                      >
+                        {isExpanded ? "Lihat Lebih Sedikit" : "Lihat Selengkapnya"}
+                      </button>
+                    )}
+                    
                     {/* Status Display Below H2 with Icons */}
                     <div className="flex items-center mt-2">
                       {request.request_status === 'Awaiting Donation' ? (
@@ -90,10 +93,11 @@ export const GetAllRequest = ({ isDarkMode }) => {
                       )}
                       <span className="text-sm font-medium">{request.request_status}</span>
                     </div>
+
                     <div className="mt-3 flex-grow">
                       <h3 className="text-lg font-medium">Items:</h3>
                       <ul className="space-y-2 mt-2">
-                        {request.items.map((item , index) => (
+                        {request.items.map((item, index) => (
                           <li key={index} className={`flex items-center justify-between ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                             <div className="flex items-center">
                               <FaBox className={`text-gray-600 mr-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} /> {/* Icon for each item */}
@@ -107,7 +111,7 @@ export const GetAllRequest = ({ isDarkMode }) => {
 
                     {/* Link to detail page with request ID */}
                     <div className="mt-4 text-center">
-                    <Link to={`/getDetailAllRequest/${request.id}`} className={`inline-block font-semibold py-2 px-4 rounded-lg transition duration-200 ${isDarkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
+                    <Link to={`/getDetailMyRequest/${request.id}`} className={`inline-block font-semibold py-2 px-4 rounded-lg transition duration-200 ${isDarkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
   View Details
 </Link>
 

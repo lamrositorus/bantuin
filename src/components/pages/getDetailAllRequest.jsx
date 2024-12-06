@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
@@ -300,52 +301,7 @@ export const GetDetail = () => {
               ))}
             </div>
   
-            <div className="flex justify-end space-x-4">
-              {editing ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={handleUpdate}
-                    disabled={loading} // Disable button when loading
-                    className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
-                  >
-                    {loading ? (
-                      <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                        Sedang Masuk...
-                      </div>
-                    ) : (
-                      'Simpan'
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditing(false)}
-                    className="px-4 py-2 text-white bg-gray-600 hover:bg-gray-700 rounded-md"
-                  >
-                    Batal
-                  </button>
-                </>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setEditing(true)}
-                  className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
-                >
-                  Edit
-                </button>
-              )}
-  
-              {!editing && (
-                <button
-                  type="button"
-                  onClick={handleDelete}
-                  className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md"
-                >
-                  Hapus
-                </button>
-              )}
-            </div>
+           
           </form>
         )}
       </div>

@@ -8,7 +8,6 @@ export const Request = ({ isDarkMode }) => {
   const [disasterId, setDisasterId] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-
   const [requestItems, setRequestItems] = useState([{
     categoryId: '',
     quantity: 1,
@@ -80,6 +79,10 @@ export const Request = ({ isDarkMode }) => {
     try {
       const response = await APISource.addNewRequest(disasterId, description, requestItems);
       console.log('response api: ', response);
+      // Pastikan untuk mengakses id sesuai struktur response
+      const requestId = response;
+      localStorage.setItem('requestOwnerId', requestId);
+      
       clearForm();
       toast.success('Permintaan berhasil dikirim!');
     } catch (error) {

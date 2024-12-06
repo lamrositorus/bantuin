@@ -9,7 +9,6 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
     const userId = localStorage.getItem('userId');
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false); // State untuk loading
-
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
@@ -33,7 +32,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
     return (
         <header className={`fixed top-0 left-0 w-full ${isDarkMode ? 'bg-gray-800' : 'bg-gradient-to-r from-orange-400 to-orange-600'} backdrop-blur-md shadow-lg z-50 transition-all duration-300`}>
             <nav className="container mx-auto flex items-center justify-between p-4">
-                <Link className="flex items-center text-3xl font-extrabold text-white hover:text-yellow-300 transition-colors duration-300" to="/home">
+                <Link className="flex items-center text-3xl font-extrabold text-white hover:text-yellow-300 transition-colors duration-300">
                     <FaHandsHelping className="text-yellow-300 mr-2 transform transition-transform duration-300 hover:scale-110" />
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-yellow-500">
                         BantuLink
@@ -72,8 +71,8 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                                     className={({ isActive }) =>
                                         `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
                                             isActive
-                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
-                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                                 ? 'bg-gray-700 text-white dark:bg-gray-700 dark:text-white'
+  : 'text-gray-700 hover:bg-gray-700 hover:text-white dark:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white'
                                         }`
                                     }
                                 >
@@ -86,8 +85,8 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                                     className={({ isActive }) =>
                                         `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
                                             isActive
-                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
-                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                                ? 'bg-gray-700 text-white dark:bg-gray-700 dark:text-white'
+                                                : 'text-gray-700 hover:bg-gray-700 hover:text-white dark:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white'
                                         }`
                                     }
                                 >
@@ -103,12 +102,26 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                                     className={({ isActive }) =>
                                         `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
                                             isActive
-                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
-                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                             ? 'bg-gray-700 text-white dark:bg-gray-700 dark:text-white'
+                                                : 'text-gray-700 hover:bg-gray-700 hover:text-white dark:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white'
                                         }`
                                     }
                                 >
-                                    All Requests
+                                    Beranda
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to={`/requests/owner`}
+                                    className={({ isActive }) =>
+                                        `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
+                                            isActive
+                                             ? 'bg-gray-700 text-white dark:bg-gray-700 dark:text-white'
+                                                : 'text-gray-700 hover:bg-gray-700 hover:text-white dark:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white'
+                                        }`
+                                    }
+                                >
+                                    My Request
                                 </NavLink>
                             </li>
                             <li>
@@ -117,8 +130,8 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                                     className={({ isActive }) =>
                                         `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
                                             isActive
-                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
-                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                                ? 'bg-gray-700 text-white dark:bg-gray-700 dark:text-white'
+                                                : 'text-gray-700 hover:bg-gray-700 hover:text-white dark:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white'
                                         }`
                                     }
                                 >

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/pages/Footer';
-import { About, Home, Login, Signup, Profile, Request, GetAllRequest, GetDetail } from './components/pages';
+import { About, Home, Login, Signup, Profile, Request, GetAllRequest, GetDetail, MyRequest, GetDetailMyRequest } from './components/pages';
 import { ToastContainer } from 'react-toastify';
 
 const App = () => {
@@ -20,21 +20,27 @@ const App = () => {
 
   {/* Konten Utama */}
   <div className="flex-grow">
-    <Routes>
-      <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
-      <Route path="/home" element={<Home isDarkMode={isDarkMode} />} />
-      <Route path="/about" element={<About isDarkMode={isDarkMode} />} />
-      <Route path="/login" element={<Login onLogin={login} isDarkMode={isDarkMode} />} />
-      <Route path="/signup" element={<Signup isDarkMode={isDarkMode} />} />
-      <Route path="/request" element={<Request isDarkMode={isDarkMode} />} />
-      <Route path="/getRequest/:id" element={<GetDetail isDarkMode={isDarkMode} />} />
-      <Route path="/allRequest" element={<GetAllRequest isDarkMode={isDarkMode} />} />
-      <Route path="/profile/:userId" element={<Profile isDarkMode={isDarkMode} />} />
-    </Routes>
+<Routes>
+  <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
+  <Route path="/home" element={<Home isDarkMode={isDarkMode} />} />
+  <Route path="/about" element={<About isDarkMode={isDarkMode} />} />
+  <Route path="/login" element={<Login onLogin={login} isDarkMode={isDarkMode} />} />
+  <Route path="/signup" element={<Signup isDarkMode={isDarkMode} />} />
+  <Route path="/request" element={<Request isDarkMode={isDarkMode} />} />
+  <Route path="/requests/owner" element={<MyRequest isDarkMode={isDarkMode} />} />
+  
+  {/* Separate routes for the two detail pages */}
+  <Route path="/getDetailAllRequest/:id" element={<GetDetail isDarkMode={isDarkMode} />} />
+  <Route path="/getDetailMyRequest/:id" element={<GetDetailMyRequest isDarkMode={isDarkMode} />} />
+  
+  <Route path="/allRequest" element={<GetAllRequest isDarkMode={isDarkMode} />} />
+  <Route path="/profile/:userId" element={<Profile isDarkMode={isDarkMode} />} />
+</Routes>
+
   </div>
 
   {/* Footer */}
-  {isLoggedIn && <Footer isDarkMode={isDarkMode} />}
+  {<Footer isDarkMode={isDarkMode} />}
 
   {/* Toast Notifications */}
   <ToastContainer />

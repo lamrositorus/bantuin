@@ -262,5 +262,29 @@ export class APISource {
 
         return await response.json();
       }
+      static async getUserByOwner() {
+        const token = localStorage.getItem("accessToken"); // Ambil token dari localStorage
+        if (!token) {
+          throw new Error("Token tidak ditemukan. Harap login terlebih dahulu.");
+        }
+      
+        try {
+          const response = await fetch(API_ENDPOINT.getUserbyOwner, {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`, // Tambahkan token ke header
+            },
+          });   
+      
+          return await response.json();
+      
+          
+        } catch (error) {
+          console.error("Error saat mendapatkan data permintaan:", error.message);
+          throw error; // Lempar kembali error untuk ditangani di luar fungsi
+        }
+      }
+      
     
 }
