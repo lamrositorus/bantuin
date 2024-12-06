@@ -8,6 +8,8 @@ export const GetAllRequest = ({ isDarkMode }) => {
   const [requests, setRequests] = useState([]); // State to hold requests
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [error, setError] = useState(null); // State for error handling
+  const [isExpanded, setIsExpanded] = useState(false);
+  const maxDescriptionLength = 70; // Panjang teks sebelum dipotong
 
   // Fetch requests data when the component mounts
   useEffect(() => {
@@ -28,11 +30,21 @@ export const GetAllRequest = ({ isDarkMode }) => {
 
     fetchRequests();
   }, []); // Empty dependency array ensures this runs once when the component mounts
-
+  const toggleDescription = () => {
+    setIsExpanded(!isExpanded);
+  };
   return (
     <div className={`pt-20 min-h-screen flex items-center justify-center p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className={`w-full max-w-6xl p-6 rounded-lg shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
         <h1 className={`text-3xl font-bold text-center mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>All Requests</h1>
+        <div className="text-right mb-4">
+          <Link 
+            to="/request"
+            className={`inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
+          >
+            + Request Donasi
+          </Link>
+        </div>
 
         {loading ? (
           <div className="flex justify-center items-center space-x-3">
@@ -49,9 +61,22 @@ export const GetAllRequest = ({ isDarkMode }) => {
             {requests.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {requests.map((request) => (
-                  <div key={request.id} className={`p-4 rounded-lg shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300 flex flex-col ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-800'}`}>
-                    <h2 className="text-xl font-semibold">{request.description}</h2>
-                    
+                  <div key={request.id} className={`p-4 rounded-lg  shadow-md border border-gray-200 hover:shadow-xl transition-shadow duration-300 flex flex-col ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-800'}`}>
+                    <h1 className="text-2xl mt-1"><span className="font-semibold">{request.disaster_name}</span></h1>
+
+                    <h2 className="text-base font-medium">
+                            {isExpanded || request.description.length <= maxDescriptionLength
+                              ? request.description
+                              : `${request.description.slice(0, maxDescriptionLength)}...`}
+                          </h2>
+                          {request.description.length > maxDescriptionLength && (
+                            <button
+                              onClick={toggleDescription}
+                              className="mt-2 text-sm font-semibold text-blue-500 hover:underline focus:outline-none"
+                            >
+                              {isExpanded ? "Lihat Lebih Sedikit" : "Lihat Selengkapnya"}
+                            </button>
+                          )}                    
                     {/* Status Display Below H2 with Icons */}
                     <div className="flex items-center mt-2">
                       {request.request_status === 'Awaiting Donation' ? (
@@ -65,9 +90,6 @@ export const GetAllRequest = ({ isDarkMode }) => {
                       )}
                       <span className="text-sm font-medium">{request.request_status}</span>
                     </div>
-
-                    <p className="text-sm mt-1">Disaster: <span className="font-semibold">{request.disaster_name}</span></p>
-
                     <div className="mt-3 flex-grow">
                       <h3 className="text-lg font-medium">Items:</h3>
                       <ul className="space-y-2 mt-2">

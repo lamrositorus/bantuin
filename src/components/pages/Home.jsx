@@ -19,9 +19,9 @@ export const Home = ({ isDarkMode }) => {
             <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               Bersama kita wujudkan #IndonesiaPeduliSesama 🤝
             </p>
-            <button className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 w-fit">
-              ✋ Ayo Mulai Berbagi!
-            </button>
+            <Link to="/login" className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 w-fit">
+              ✋ Ayo Login untuk mulai Berbagi!
+            </Link>
           </div>
 
           <div className="flex justify-center items-center p-4 hover:scale-105 transition-transform duration-300">
@@ -53,11 +53,9 @@ export const Home = ({ isDarkMode }) => {
               </div>
             </div>
             <p className={`text-sm italic mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-              "Berbagi tidak akan membuatmu miskin, justru memperkaya jiwamu." 
+              &quot;Berbagi tidak akan membuatmu miskin, justru memperkaya jiwamu.&quot; 
             </p>
-            <Link to={"/request"} className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transform hover:scale-105 transition-all duration-200 w-fit">
-              Minta Bantuan
-            </Link>
+
           </div>
         </div>
       </div>

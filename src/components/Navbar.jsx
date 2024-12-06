@@ -3,33 +3,32 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { APISource } from '../data/source-api'; 
 import { FaHandsHelping } from 'react-icons/fa'; 
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
-
+import { FaSpinner } from 'react-icons/fa';
 export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => { 
     const [menuOpen, setMenuOpen] = useState(false);
     const userId = localStorage.getItem('userId');
     const navigate = useNavigate();
-        const [isLoading, setIsLoading] = useState(false); // State untuk loading
+    const [isLoading, setIsLoading] = useState(false); // State untuk loading
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
     const handleLogout = async () => {
+        setIsLoading(true);
         try {
             await APISource.deleteAuthentication();
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('userId');
             onLogout();
-            navigate('/login')
+            navigate('/login');
         } catch (error) {
             console.error('Error during logout:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
-
-    if (!isLoggedIn) {
-        return null;
-    }
 
     return (
         <header className={`fixed top-0 left-0 w-full ${isDarkMode ? 'bg-gray-800' : 'bg-gradient-to-r from-orange-400 to-orange-600'} backdrop-blur-md shadow-lg z-50 transition-all duration-300`}>
@@ -42,7 +41,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                 </Link>
 
                 <div
-                    className={`hamburger ${menuOpen ? 'open' : ''} md:hidden cursor-pointer p-3 rounded-full  transition-colors`}
+                    className={`hamburger ${menuOpen ? 'open' : ''} md:hidden cursor-pointer p-3 rounded-full transition-colors`}
                     onClick={toggleMenu}
                 >
                     <div className="flex flex-col gap-1.5 relative w-6 h-5">
@@ -61,73 +60,94 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                 </button>
 
                 <ul
-    className={`absolute md:static md:bg-transparent w-full md:w-auto transition-all left-0 duration-300 ease-in-out ${
-        menuOpen ? 'top-16 opacity-100 bg-slate-200 shadow-lg' : 'top-[-200px] opacity-0'
-    } md:flex md:opacity-100 md:top-0 md:items-center md:space-x-2`}
->
-    <li>
-        <NavLink
-            to="/home"
-            className={({ isActive }) =>
-                `block px-5 py-2 font-medium rounded-lg transition-all ${
-                    isActive
-                        ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-500'}`
-                        : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`
-                }`
-            }
-        >
-            Home
-        </NavLink>
-    </li>
-    <li>
-        <NavLink
-            to="/allrequest"
-            className={({ isActive }) =>
-                `block px-5 py-2 font-medium rounded-lg transition-all ${
-                    isActive
-                        ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-500'}`
-                        : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`
-                }`
-            }
-        >
-            All Requests
-        </NavLink>
-    </li>
-    <li>
-        <NavLink
-            to={`/profile/${userId}`}
-            className={({ isActive }) =>
-                `block px-5 py-2 font-medium rounded-lg transition-all ${
-                    isActive
-                        ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-500'}`
-                        : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-500'}`
-                }`
-            }
-        >
-            Profile
-        </NavLink>
-    </li>
-    <li>
-    <button
-            onClick={handleLogout}
-            disabled={isLoading} // Disable tombol saat loading
-            className={`block px-5 py-2 font-medium rounded-lg w-full text-left transition-all ${
-                isDarkMode
-                    ? 'text-gray-700 hover:bg-red-500  '
-                    : 'text-gray-700  hover:bg-red-500'
-            } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`} // Gaya tombol saat disable
-        >
-            {isLoading ? (
-                <div className="flex items-center gap-2">
-                    <span className="loader"></span> {/* Tambahkan loader */}
-                    Logging out...
-                </div>
-            ) : (
-                'Logout'
-            )}
-        </button>
-    </li>
-</ul>
+                    className={`absolute md:static md:bg-transparent w-full md:w-auto transition-all left-0 duration-300 ease-in-out ${
+                        menuOpen ? 'top-16 opacity-100 bg-slate-200 shadow-lg' : 'top-[-200px] opacity-0'
+                    } md:flex md:opacity-100 md:top-0 md:items-center md:space-x-2`}
+                >
+                    {!isLoggedIn ? (
+                        <>
+                            <li>
+                                <NavLink
+                                    to="/home"
+                                    className={({ isActive }) =>
+                                        `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
+                                            isActive
+                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
+                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                        }`
+                                    }
+                                >
+                                    Home
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/about"
+                                    className={({ isActive }) =>
+                                        `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
+                                            isActive
+                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
+                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                        }`
+                                    }
+                                >
+                                    About
+                                </NavLink>
+                            </li>
+                        </>
+                    ) : (
+                        <>
+                            <li>
+                                <NavLink
+                                    to="/allrequest"
+                                    className={({ isActive }) =>
+                                        `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
+                                            isActive
+                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
+                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                        }`
+                                    }
+                                >
+                                    All Requests
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to={`/profile/${userId}`}
+                                    className={({ isActive }) =>
+                                        `block px-5 py-2 font-medium text-white rounded-lg transition-all ${
+                                            isActive
+                                                ? `${isDarkMode ? 'bg-gray-700 text-white' : 'bg-yellow-50 text-orange-900'}`
+                                                : `${isDarkMode ? 'text-gray-700 hover:bg-gray-700 hover:text-white' : 'text-gray-700 hover:bg-yellow-50 hover:text-orange-900'}`
+                                        }`
+                                    }
+                                >
+                                    Profile
+                                </NavLink>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={handleLogout}
+                                    disabled={isLoading}
+                                    className={`block px-5 py-2 font-medium text-white rounded-lg w-full text-left transition-all ${
+                                        isDarkMode
+                                            ? 'text-gray-700 hover:bg-red-700'
+                                            : 'text-gray-700 hover:bg-red-700'
+                                    } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+                                >
+                                    {isLoading ? (
+                                        <div className="flex items-center gap-2">
+                                            <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+                                            Logout...
+                                        </div>
+                                    ) : (
+                                        'Logout'
+                                    )}
+                                </button>
+                            </li>
+                        </>
+                    )}
+                </ul>
             </nav>
         </header>
     );
