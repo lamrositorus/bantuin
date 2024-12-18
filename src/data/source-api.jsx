@@ -317,6 +317,22 @@ export class APISource {
     
         return await response.json();
       }
+
+      static async getDonationById(id) {
+        const response = await fetch(API_ENDPOINT.Detaildonations(id), {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Gagal mendapatkan permintaan");
+        }
+
+        return await response.json();
+      }
       static async postDonation(requestId, description, donationItems) {
         const token = localStorage.getItem('accessToken');
     

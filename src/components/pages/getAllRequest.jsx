@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fa'; // Import React Icons
 import { APISource } from '../../data/source-api'; // Import API function
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 // Main Component
 export const GetAllRequest = ({ isDarkMode }) => {
@@ -197,4 +198,8 @@ export const GetAllRequest = ({ isDarkMode }) => {
       </div>
     </div>
   );
+};
+// PropTypes validation
+GetAllRequest.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired, // Expecting isDarkMode to be a required boolean
 };

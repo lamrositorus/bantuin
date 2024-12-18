@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/pages/Footer';
-import { About, Home, Login, Signup, Profile, Request, GetAllRequest, GetDetail, MyRequest, GetDetailMyRequest, GetRequestItem, DonationOwner } from './components/pages';
+import { About, Home, Login, Signup, Profile, Request, GetAllRequest, GetDetail, MyRequest, GetDetailMyRequest, GetRequestItem, DonationOwner, GetDonationDetail } from './components/pages';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaDonate } from 'react-icons/fa';
@@ -35,9 +35,12 @@ const App = () => {
           {/* Separate routes for the two detail pages */}
           <Route path="/getDetailAllRequest/:id" element={<GetDetail isDarkMode={isDarkMode} />} />
           <Route path="/getDetailMyRequest/:id" element={<GetDetailMyRequest isDarkMode={isDarkMode} />} />
-          <Route path="/donations/owner" element={<DonationOwner isDarkMode={isDarkMode} />} />
           <Route path="/beranda" element={<GetAllRequest isDarkMode={isDarkMode} />} />
           <Route path="/profile/:userId" element={<Profile isDarkMode={isDarkMode} />} />
+          
+          <Route path="/donations/owner" element={<DonationOwner isDarkMode={isDarkMode} />} />
+          <Route path="/donations/:id" element={<GetDonationDetail isDarkMode={isDarkMode} />} />
+          
         </Routes>
       </div>
 

@@ -21,6 +21,6 @@ export const API_ENDPOINT = {
 
     //donations
     donationOwner: `${CONFIG.BASE_URL}/donations/owner`,
-    donations: `${CONFIG.BASE_URL}/donations`,
+    Detaildonations: (id)=>`${CONFIG.BASE_URL}/donations/${id}`,
     putRequest: (id) => `${CONFIG.BASE_URL}/donations/${id}`,
 }

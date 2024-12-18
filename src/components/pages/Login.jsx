@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLock } from 'react-icons/fa';
+import { FaUser , FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { APISource } from '../../data/source-api';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -8,7 +8,7 @@ export const Login = ({ onLogin, isDarkMode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -78,7 +78,7 @@ export const Login = ({ onLogin, isDarkMode }) => {
                   : 'border-gray-200 bg-white hover:border-orange-400 focus-within:border-orange-400 focus-within:shadow-md'
               }`}
             >
-              <FaUser
+              <FaUser 
                 className={`w-5 h-5 transition-transform duration-300 ${
                   isDarkMode
                     ? 'text-gray-400 group-hover:text-gray-300 group-focus-within:rotate-12'
@@ -100,7 +100,7 @@ export const Login = ({ onLogin, isDarkMode }) => {
 
           <div className="group">
             <div
-              className={`flex items-center border-2 rounded-xl p-4 transition-all duration-300 ${
+              className={` flex items-center border-2 rounded-xl p-4 transition-all duration-300 ${
                 isDarkMode
                   ? 'border-gray-700 bg-gray-700 hover:border-gray-500 focus-within:border-gray-500 focus-within:shadow-md'
                   : 'border-gray-200 bg-white hover:border-orange-400 focus-within:border-orange-400 focus-within:shadow-md'
@@ -114,7 +114,7 @@ export const Login = ({ onLogin, isDarkMode }) => {
                 }`}
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className={`flex-1 ml-3 border-none bg-transparent focus:ring-0 focus:outline-none ${
                   isDarkMode ? 'text-white placeholder-gray-500' : 'text-gray-700 placeholder-gray-400'
                 }`}
@@ -123,6 +123,13 @@ export const Login = ({ onLogin, isDarkMode }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="ml-2"
+              >
+                {showPassword ? <FaEyeSlash className="text-gray-400" /> : <FaEye className="text-gray-400" />}
+              </button>
             </div>
           </div>
 

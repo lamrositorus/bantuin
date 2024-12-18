@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUser, FaPhone, FaEnvelope, FaLock, FaHome, FaTransgender } from 'react-icons/fa';
+import { FaUser, FaPhone, FaEnvelope, FaLock, FaHome, FaTransgender, FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 import { APISource } from "../../data/source-api";
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -12,6 +12,7 @@ export const Signup = ({ isDarkMode }) => {
   const [email, setEmail] = useState("");
   const [jenisKelamin, setJenisKelamin] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
   const navigate = useNavigate();
 
@@ -32,7 +33,6 @@ export const Signup = ({ isDarkMode }) => {
         toast.success('Pendaftaran berhasil');
         navigate('/login');
         localStorage.setItem('userId', userId);
-        toast.success('Pendaftaran berhasil');
       }
     } catch (error) {
       alert(error.message || 'Pendaftaran gagal');
@@ -101,10 +101,10 @@ export const Signup = ({ isDarkMode }) => {
             {/* Input lainnya */}
             {[ 
               { Icon: FaEnvelope, id: "email", type: "email", placeholder: "Email", value: email, setValue: setEmail },
-              { Icon: FaLock, id: "password", type: "password", placeholder: "Password", value: password, setValue: setPassword },
+              { Icon: FaLock, id: "password", type: showPassword ? "text" : "password", placeholder: "Password", value: password, setValue: setPassword, isPassword: true },
               { Icon: FaPhone, id: "telepon", type: "tel", placeholder: "Telepon", value: telepon, setValue: setTelepon },
               { Icon: FaHome, id: "alamat", type: "text", placeholder: "Alamat", value: alamat, setValue: setAlamat },
-            ].map(({ Icon, id, type, placeholder, value, setValue }, index) => (
+            ].map(({ Icon, id, type, placeholder, value, setValue, isPassword }, index) => (
               <div key={index} className="group">
                 <div
                   className={`flex items-center border-2 rounded-xl p-3 transition-all duration-300 ${
@@ -131,6 +131,15 @@ export const Signup = ({ isDarkMode }) => {
                     onChange={(e) => setValue(e.target.value)}
                     required
                   />
+                  {isPassword && (
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="ml-2"
+                    >
+                      {showPassword ? <FaEyeSlash className="text-gray-400" /> : <FaEye className="text-gray-400" />}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -211,4 +220,3 @@ export const Signup = ({ isDarkMode }) => {
   );
 };
 
-export default Signup;

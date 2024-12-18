@@ -1,5 +1,5 @@
 import { BsGithub } from "react-icons/bs";
-
+import PropTypes from 'prop-types'; // Import PropTypes
 export const Footer = ({ isDarkMode }) => {
     return (
         <footer className={`bg-gradient-to-r ${isDarkMode ? 'from-gray-800 to-gray-700' : 'from-gray-900 to-gray-800'} text-gray-200 py-8`}>
@@ -15,4 +15,8 @@ export const Footer = ({ isDarkMode }) => {
     </div>
   </footer>
     );
+};
+// PropTypes validation
+Footer.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired, // Expecting isDarkMode to be a required boolean
 };
