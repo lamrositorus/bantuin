@@ -75,11 +75,8 @@ export const Profile = ({ isDarkMode }) => {
         setLoading(true);
         await APISource.updateProfile(userId, editedProfile);
         setProfile(editedProfile);
-        console.log("Profile updated successfully", editedProfile);
         setIsEditing(false);
         setErrors({});
-
-        // Menampilkan toast setelah berhasil menyimpan
         Swal.fire('Berhasil', 'Profil telah diperbarui.', 'success');
       } catch (err) {
         setError(err.message);
@@ -135,16 +132,18 @@ export const Profile = ({ isDarkMode }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center space-x-3">
-        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      <div className="flex items-center justify-center h-screen">
+        <div className="flex flex-col items-center space-x-3">
+          <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+          <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center text-red-600 flex justify-center items-center space-x-2">
+      <div className="text-center pt-20 text-red-600 flex justify-center items-center space-x-2">
         <FaExclamationCircle className="text-red-600 text-3xl" />
         <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-800'}`}>{error}</p>
       </div>

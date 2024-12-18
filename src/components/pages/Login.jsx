@@ -29,6 +29,7 @@ export const Login = ({ onLogin, isDarkMode }) => {
         navigate('/beranda');
       } else {
         alert(data.message || 'Login gagal');
+        toast.error('Login gagal');
       }
     } catch (error) {
       console.error('Error:', error);

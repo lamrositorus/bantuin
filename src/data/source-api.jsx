@@ -285,35 +285,93 @@ export class APISource {
           throw error; // Lempar kembali error untuk ditangani di luar fungsi
         }
       }
-      
-      static async postDonation(requestId, donationItems, description) {
+      static async getRequestItems(id){
+        const response = await fetch(API_ENDPOINT.requestItem(id), {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Gagal mendapatkan permintaan");
+        }
+        return await response.json();
+      }
+
+      //donation
+      static async getDonationOwner() {
+        const token = localStorage.getItem('accessToken');
+        const response = await fetch(API_ENDPOINT.donationOwner, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Gagal mendapatkan permintaan');
+        }
+    
+        return await response.json();
+      }
+      static async postDonation(requestId, description, donationItems) {
+        const token = localStorage.getItem('accessToken');
+    
         try {
-            const token = localStorage.getItem("accessToken");
-          const response = await fetch(API_ENDPOINT.donation, {
-            method: "POST",
+          const payload = {
+            requestId,
+            description,
+            donationItems,
+          };
+    
+          console.log("Payload being sent:", JSON.stringify(payload, null, 2)); // Debug payload
+    
+          const response = await fetch(API_ENDPOINT.donations, {
+            method: 'POST',
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({
-              requestId: requestId,
-              descriptions: description,
-              donationItems: donationItems, // Array of items with requestItemId, quantity, and descriptions
-            }),
+            body: JSON.stringify(payload),
           });
-      
+    
           if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || "Gagal menambahkan donasi");
+            console.error('API Response Error:', errorData); // Debug error
+            throw new Error(errorData.message || 'Invalid API request');
           }
-      
-          return await response.json(); // Return response if needed
+    
+          return await response.json();
         } catch (error) {
-          console.error("Error while posting donation:", error);
+          console.error('API Error:', error.message);
           throw error;
         }
       }
-      
-    
+
+      static async putDonation(id, requestId, descriptions, donationItems) {
+        const token = localStorage.getItem('accessToken');
+        const response = await fetch(API_ENDPOINT.putRequest(id), {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            requestId,
+            descriptions,
+            donationItems,
+          }),          
+        })   
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Gagal memperbarui permintaan');
+        }   
+
+        return await response.json();
+      }
 }

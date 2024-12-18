@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { FaSpinner, FaExclamationCircle } from 'react-icons/fa'; // Import React Icons
@@ -100,7 +100,14 @@ export const GetDetail = ({isDarkMode}) => {
   };
 
 
-
+  if (loading) {
+    return (
+      <div className="flex pt-20 justify-center items-center space-x-3">
+        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      </div>
+    );
+  }
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -111,11 +118,21 @@ export const GetDetail = ({isDarkMode}) => {
       <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'} mb-8`}>
         {editing ? 'Edit Permintaan Bantuan' : 'Detail Permintaan Bantuan'}
       </h2>
-      {loading ? (
-        <div className="flex justify-center items-center space-x-3">
-          <FaSpinner className={`animate-spin ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} text-3xl`} />
-          <span className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Loading...</span>
+      <div className="text-right mb-4">
+          <Link 
+            to={`/requests/items/${id}`}
+            className={`inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
+          >
+            + Donation
+          </Link>
         </div>
+      {loading ? (
+      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center space-x-3">
+        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      </div>
+    </div>
       ) : error ? (
         <div className="text-center flex justify-center items-center space-x-2">
           <FaExclamationCircle className="text-red-600 text-3xl" />
@@ -124,7 +141,7 @@ export const GetDetail = ({isDarkMode}) => {
       ) : (
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           <div>
-            <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>ID Bencana</label>
+            <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Nama Bencana</label>
             <select
               value={requestDetail.disaster_id}
               disabled={!editing}
@@ -215,7 +232,7 @@ export const GetDetail = ({isDarkMode}) => {
                       Satuan
                     </label>
                     <select
-                      value={item.unitId}
+                      value={item.unit_id}
                       onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
                       disabled={!editing}
                       className={`mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 ${

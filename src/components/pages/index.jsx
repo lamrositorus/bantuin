@@ -8,4 +8,5 @@ export * from "./getAllRequest";
 export * from "./getDetailAllRequest";
 export * from "./MyRequest"
 export * from "./getDetailMyRequest"
-export * from "./donation"
+export * from "./getRequestItem"
+export * from "./getDonationOwner"

@@ -44,7 +44,7 @@ export const MyRequest = ({ isDarkMode }) => {
             to="/request"
             className={`inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
           >
-            + Relief Request
+            + Request
           </Link>
         </div>
 
@@ -80,18 +80,20 @@ export const MyRequest = ({ isDarkMode }) => {
                       </button>
                     )}
                     
-                    {/* Status Display Below H2 with Icons */}
-                    <div className="flex items-center mt-2">
+{/* Status with Icon */}
+<div className="flex items-center mt-2">
                       {request.request_status === 'Awaiting Donation' ? (
                         <FaExclamationCircle className="text-yellow-600 mr-2" />
-                      ) : request.request_status === 'Completed' ? (
+                      ) : request.request_status === 'Completed' || request.request_status === 'Fulfilled' ? (
                         <FaCheckCircle className="text-green-600 mr-2" />
                       ) : request.request_status === 'Rejected' ? (
                         <FaTimesCircle className="text-red-600 mr-2" />
                       ) : (
                         <FaInfoCircle className="text-blue-600 mr-2" />
                       )}
-                      <span className="text-sm font-medium">{request.request_status}</span>
+                      <span className="text-sm font-medium">
+                        {request.request_status === 'fulfilled' ? 'Complete' : request.request_status}
+                      </span>
                     </div>
 
                     <div className="mt-3 flex-grow">
@@ -100,7 +102,7 @@ export const MyRequest = ({ isDarkMode }) => {
                         {request.items.map((item, index) => (
                           <li key={index} className={`flex items-center justify-between ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                             <div className="flex items-center">
-                              <FaBox className={`text-gray-600 mr-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} /> {/* Icon for each item */}
+                              <FaBox className={`mr-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} /> {/* Icon for each item */}
                               <span>{item.description}</span>
                             </div>
                             <span className="font-semibold">{item.quantity} {item.unitId}</span>

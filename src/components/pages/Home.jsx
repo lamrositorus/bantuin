@@ -45,7 +45,7 @@ export const Home = ({ isDarkMode }) => {
             <div className="flex gap-4 mt-6">
               <div className={`bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
                 <span className="font-bold text-blue-600 text-xl">25.000+</span>
-                <p className={`text-gray-600 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>😊 Penerima Manfaat</p>
+                <p className={`text-gray-600 ${ isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>😊 Penerima Manfaat</p>
               </div>
               <div className={`bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-shadow ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
                 <span className="font-bold text-purple-600 text-xl">50.000+</span>
@@ -55,7 +55,6 @@ export const Home = ({ isDarkMode }) => {
             <p className={`text-sm italic mt-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
               &quot;Berbagi tidak akan membuatmu miskin, justru memperkaya jiwamu.&quot; 
             </p>
-
           </div>
         </div>
       </div>

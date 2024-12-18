@@ -36,6 +36,7 @@ export const Signup = ({ isDarkMode }) => {
       }
     } catch (error) {
       alert(error.message || 'Pendaftaran gagal');
+      toast.error('Pendaftaran gagal');
     } finally {
       setLoading(false);
     }

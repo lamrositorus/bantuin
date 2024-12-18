@@ -1,10 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { FaSpinner, FaExclamationCircle } from 'react-icons/fa'; // Import React Icons
-
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
@@ -200,7 +199,7 @@ export const GetDetailMyRequest = ({isDarkMode}) => {
         ) : (
           <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium">ID Bencana</label>
+              <label className="block text-sm font-medium">Nama Bencana</label>
               <select
                 value={requestDetail.disaster_id}
                 disabled={!editing}
@@ -294,7 +293,7 @@ export const GetDetailMyRequest = ({isDarkMode}) => {
                     <div>
                       <label className="block text-sm font-medium">Satuan</label>
                       <select
-                        value={item.unitId}
+                        value={item.unit_id}
                         onChange={(e) => handleItemChange(index, 'unitId', e.target.value)}
                         disabled={!editing}
                         className={`mt-1 block w-full rounded-md shadow-sm ${
