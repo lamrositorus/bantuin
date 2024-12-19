@@ -5,6 +5,9 @@ import { AiOutlineIdcard, AiOutlineFieldTime } from "react-icons/ai"; // Icons f
 import { BiComment } from "react-icons/bi"; // Icon for description
 import { MdOutlineCategory } from "react-icons/md"; // Icon for category
 import { BsFillCheckCircleFill, BsFillXCircleFill } from "react-icons/bs"; // Icons for status
+import {MdFormatListNumbered  } from "react-icons/md";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export const DonationOwner = ({ isDarkMode }) => {
   const [donationData, setDonationData] = useState(null);
@@ -30,9 +33,11 @@ export const DonationOwner = ({ isDarkMode }) => {
 
   if (loading) {
     return (
-      <div className={`flex pt-20 justify-center items-center space-x-3 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      <div className={`min-h-screen flex flex-col justify-center items-center ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+        <div className="flex justify-center items-center space-x-3">
+          <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+          <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+        </div>
       </div>
     );
   }
@@ -54,20 +59,24 @@ export const DonationOwner = ({ isDarkMode }) => {
         </h2>
         {donationData && donationData.data.donations.length > 0 ? (
           donationData.data.donations.map((donation, index) => (
-            <div key={index} className={`mb-6 p-4 border rounded-lg ${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'} shadow-md`}>
+            <div key={index} className={`mb-6 p-4 border rounded-lg ${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'} shadow-md flex flex-col`}>
               <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
-                <AiOutlineIdcard className="inline-block mr-2" /> Donation ID: {donation.donation_id}
+                <Link to={`/donations/${donation.donation_id}`} className={`${isDarkMode ? 'text-blue-300 hover:text-blue-400' : 'text-blue-600 hover:text-blue-700'}`}>
+                <AiOutlineIdcard className="inline-block mr-2" /> ID Donasi: {donation.donation_id}
+                </Link>
               </h3>
               <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                <BiComment className="inline-block mr-2" /> Description: {donation.donation_description}
+                <BiComment className="inline-block mr-2" /> Deskripsi: {donation.donation_description}
               </p>
-              <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                <AiOutlineFieldTime className="inline-block mr-2" /> Created At: {new Date(donation.donation_created_at).toLocaleString()}
-              </p>
-              <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                <AiOutlineFieldTime className="inline-block mr-2" /> Updated At: {new Date(donation.donation_updated_at).toLocaleString()}
-              </p>
-              <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700' }`}>
+              <div className="flex justify-between text-sm">
+                <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <AiOutlineFieldTime className="inline-block mr-2" /> Dibuat: {new Date(donation.donation_created_at).toLocaleString()}
+                </p>
+                <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <AiOutlineFieldTime className="inline-block mr-2" /> Diperbarui: {new Date(donation.donation_updated_at).toLocaleString()}
+                </p>
+              </div>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray -700'}`}>
                 {donation.donation_status === "Pending" ? (
                   <BsFillXCircleFill className="inline-block mr-2 text-red-500" />
                 ) : (
@@ -76,10 +85,10 @@ export const DonationOwner = ({ isDarkMode }) => {
                 Status: {donation.donation_status}
               </p>
               <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                <AiOutlineIdcard className="inline-block mr-2" /> Request ID: {donation.request_id}
+                <AiOutlineIdcard className="inline-block mr-2" /> ID Request: {donation.request_id}
               </p>
               <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                <BiComment className="inline-block mr-2" /> Request Description: {donation.request_description}
+                <BiComment className="inline-block mr-2" />Deskripsi Request: {donation.request_description}
               </p>
               <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 {donation.request_status === "Fulfilled" ? (
@@ -99,10 +108,13 @@ export const DonationOwner = ({ isDarkMode }) => {
                       <strong>{item.category_name}</strong>
                     </h5>
                     <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                      <BiComment className="inline-block mr-2" /> Description: {item.description}
+                      <BiComment className="inline-block mr-2" /> Deskripsi: {item.description}
                     </p>
                     <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                      Quantity: {item.quantity}
+                      <MdFormatListNumbered  className="inline-block mr-2" /> Quantity: {item.quantity}
+                    </p>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      
                     </p>
                   </div>
                 ))}
@@ -110,9 +122,13 @@ export const DonationOwner = ({ isDarkMode }) => {
             </div>
           ))
         ) : (
-          <p className="text-lg">No donations found.</p>
+          <p className={`text-lg ${isDarkMode ? 'text-white' : 'text-black'} `}>No donations found.</p>
         )}
       </div>
     </div>
   );
+};
+
+DonationOwner.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
 };

@@ -1,6 +1,7 @@
 import donation from "../../assets/pipp.svg";
 import gambar from "../../assets/gambar.svg";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 export const Home = ({ isDarkMode }) => {
   return (
@@ -60,4 +61,7 @@ export const Home = ({ isDarkMode }) => {
       </div>
     </div>
   );
+};
+Home.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
 };

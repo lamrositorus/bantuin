@@ -168,9 +168,9 @@ export const Signup = ({ isDarkMode }) => {
                   onChange={(e) => setJenisKelamin(e.target.value)}
                   required
                 >
-                  <option value="" disabled>Jenis Kelamin</option>
-                  <option value="Laki-laki">Laki-laki</option>
-                  <option value="Perempuan">Perempuan</option>
+                  <option className={isDarkMode ? ' bg-gray-800' : 'text-gray-700'} value="" disabled>Jenis Kelamin</option>
+                  <option className={isDarkMode ? 'text-gray-50 bg-gray-800' : 'text-gray-700'} value="Laki-laki">Laki-laki</option>
+                  <option className={isDarkMode ? 'text-gray-50 bg-gray-800' : 'text-gray-700'} value="Perempuan">Perempuan</option>
                 </select>
               </div>
             </div>

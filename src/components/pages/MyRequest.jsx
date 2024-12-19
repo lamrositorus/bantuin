@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FaSpinner, FaExclamationCircle, FaCheckCircle, FaTimesCircle, FaInfoCircle, FaBox } from 'react-icons/fa'; // Import React Icons
 import { APISource } from '../../data/source-api'; // Import API function
 import { Link } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 // Main Component
 export const MyRequest = ({ isDarkMode }) => {
   const [requests, setRequests] = useState([]); // State to hold requests
@@ -38,21 +38,23 @@ export const MyRequest = ({ isDarkMode }) => {
   return (
     <div className={`pt-20 min-h-screen flex items-center justify-center p-4 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className={`w-full max-w-6xl p-6 rounded-lg shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <h1 className={`text-3xl font-bold text-center mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>My Requests</h1>
+        <h1 className={`text-3xl font-bold text-center mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Permintaan saya</h1>
         <div className="text-right mb-4">
           <Link 
             to="/request"
             className={`inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-transform transform hover:scale-105 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}
           >
-            + Request
+            + Permintaan
           </Link>
         </div>
 
         {loading ? (
-          <div className="flex justify-center items-center space-x-3">
-            <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
-          </div>
+      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center space-x-3">
+        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      </div>
+    </div>
         ) : error ? (
           <div className="text-center text-red-600 flex justify-center items-center space-x-2">
             <FaExclamationCircle className="text-red-600 text-3xl" />
@@ -114,8 +116,8 @@ export const MyRequest = ({ isDarkMode }) => {
                     {/* Link to detail page with request ID */}
                     <div className="mt-4 text-center">
                     <Link to={`/getDetailMyRequest/${request.id}`} className={`inline-block font-semibold py-2 px-4 rounded-lg transition duration-200 ${isDarkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>
-  View Details
-</Link>
+                      Lihat Detailnya
+                    </Link>
 
                     </div>
                   </div>
@@ -129,4 +131,7 @@ export const MyRequest = ({ isDarkMode }) => {
       </div>
     </div>
   );
+};
+MyRequest.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
 };

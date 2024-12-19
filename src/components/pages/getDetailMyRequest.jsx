@@ -7,6 +7,7 @@ import { FaSpinner, FaExclamationCircle } from 'react-icons/fa'; // Import React
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
 const CATEGORIES = [
   { id: 'category-1', label: 'Makanan' },
   { id: 'category-2', label: 'Minuman' },
@@ -187,10 +188,12 @@ export const GetDetailMyRequest = ({isDarkMode}) => {
           {editing ? 'Edit Permintaan Bantuan' : 'Detail Permintaan Bantuan'}
         </h2>
         {loading ? (
-          <div className="flex justify-center items-center space-x-3">
-            <FaSpinner className="animate-spin text-3xl" />
-            <span>Loading...</span>
-          </div>
+      <div className={`min-h-screen flex flex-col justify-center items-center ${isDarkMode ? 'bg-gray-900' : 'bg-transparent'}`}>
+      <div className="flex justify-center items-center space-x-3">
+        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      </div>
+    </div>
         ) : error ? (
           <div className="text-center flex justify-center items-center space-x-2">
             <FaExclamationCircle className="text-3xl text-red-500" />
@@ -391,8 +394,7 @@ export const GetDetailMyRequest = ({isDarkMode}) => {
       <ToastContainer />
     </div>
   );
-  
-  
-  
-
+};
+GetDetailMyRequest.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
 };

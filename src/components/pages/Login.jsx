@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser , FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { APISource } from '../../data/source-api';
 import { ToastContainer, toast } from 'react-toastify';
-
+import PropTypes from 'prop-types';
 export const Login = ({ onLogin, isDarkMode }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -177,4 +177,7 @@ export const Login = ({ onLogin, isDarkMode }) => {
   );
 };
 
-export default Login;
+Login.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+  isDarkMode: PropTypes.bool.isRequired,
+};

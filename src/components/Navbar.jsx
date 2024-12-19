@@ -5,7 +5,7 @@ import { FaHandsHelping } from 'react-icons/fa';
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { FaSpinner } from 'react-icons/fa';
 import Snowfall from 'react-snowfall';
-
+import PropTypes from 'prop-types';
 export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => { 
     const [menuOpen, setMenuOpen] = useState(false);
     const userId = localStorage.getItem('userId');
@@ -99,7 +99,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                       }`
                     }
                   >
-                    Home
+                    Beranda
                   </NavLink>
                 </li>
                 <li>
@@ -111,7 +111,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                       }`
                     }
                   >
-                    About
+                    Tentang Kami
                   </NavLink>
                 </li>
                 <li>
@@ -123,7 +123,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                       }`
                     }
                   >
-                    Login
+                    Masuk
                   </NavLink>
                 </li>
               </>
@@ -150,7 +150,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                       }`
                     }
                   >
-                    My Request
+                    Permintaan saya
                   </NavLink>
                 </li>
                 <li>
@@ -162,7 +162,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                       }`
                     }
                   >
-                    My Donation
+                    Donasi saya
                   </NavLink>
                 </li>
                 <li>
@@ -174,7 +174,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                       }`
                     }
                   >
-                    Profile
+                    Profil
                   </NavLink>
                 </li>
                 <li className="flex items-center space-x-2">
@@ -188,7 +188,7 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
                     {isLoading ? (
                       <div className="flex items-center gap-2">
                         <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-                        Logout...
+                        Keluar...
                       </div>
                     ) : (
                       "Logout"
@@ -202,4 +202,10 @@ export const Navbar = ({ isLoggedIn, onLogout, toggleTheme, isDarkMode }) => {
       </header>
     );
       
+};
+Navbar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  isDarkMode: PropTypes.bool.isRequired,
+  toggleTheme: PropTypes.func.isRequired
 };

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { APISource } from "../../data/source-api"; // Import the API function
 import { FaSpinner, FaExclamationCircle } from "react-icons/fa"; // Import React Icons
-
-export const GetDonationDetail = ({ donationId, isDarkMode }) => {
+import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+export const GetDonationDetail = ({  isDarkMode }) => {
   const [donationDetail, setDonationDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { donationId } = useParams();
 
   useEffect(() => {
     const fetchDonationDetail = async () => {
@@ -26,16 +28,18 @@ export const GetDonationDetail = ({ donationId, isDarkMode }) => {
 
   if (loading) {
     return (
-      <div className={`flex pt-20 justify-center items-center space-x-3 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
-        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      <div className={`min-h-screen flex flex-col justify-center items-center ${isDarkMode ? 'bg-gray-900' : 'bg-transparent'}`}>
+        <div className="flex justify-center items-center space-x-3">
+          <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+          <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className={`flex justify-center items-center min-h-screen ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`min-h-screen flex flex-col justify-center items-center ${isDarkMode ? 'bg-gray-900' : 'bg-transparent'}`}>
         <FaExclamationCircle className="text-red-500 text-3xl" />
         <p className="ml-2">{error}</p>
       </div>
@@ -50,15 +54,7 @@ export const GetDonationDetail = ({ donationId, isDarkMode }) => {
         </h1>
         {donationDetail ? (
           <div>
-            <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
-              Donation ID: {donationDetail.donation_id}
-            </h3>
-            <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Description: {donationDetail.donation_description}
-            </p>
-            <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Status: {donationDetail.donation_status}
-            </p>
+
             {/* Add more details as needed */}
           </div>
         ) : (
@@ -67,4 +63,8 @@ export const GetDonationDetail = ({ donationId, isDarkMode }) => {
       </div>
     </div>
   );
+};
+
+GetDonationDetail.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
 };

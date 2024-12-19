@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { APISource } from "../../data/source-api";
 import Swal from 'sweetalert2';  // SweetAlert2 import
 import { FaSpinner, FaTimes } from "react-icons/fa";
-
+import PropTypes from "prop-types";
 export const GetRequestItem = ({ isDarkMode }) => {
   const { id } = useParams();
   const [requestItems, setRequestItems] = useState([]);
@@ -240,3 +240,6 @@ export const GetRequestItem = ({ isDarkMode }) => {
       );
       
   };
+GetRequestItem.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
+}

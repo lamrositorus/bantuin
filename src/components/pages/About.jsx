@@ -1,7 +1,6 @@
 import { FaRegCheckCircle, FaHandHoldingHeart, FaUsers } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import PropTypes from 'prop-types'; // Import PropTypes
-
+import PropTypes from "prop-types";
 export const About = ({ isDarkMode }) => {
   const bgClass = isDarkMode
     ? "bg-gradient-to-b from-gray-900 to-black text-gray-300"
@@ -105,5 +104,5 @@ export const About = ({ isDarkMode }) => {
   );
 };
 About.propTypes = {
-  isDarkMode: PropTypes.bool.isRequired, // Expecting isDarkMode to be a required boolean
+  isDarkMode: PropTypes.bool.isRequired,
 };

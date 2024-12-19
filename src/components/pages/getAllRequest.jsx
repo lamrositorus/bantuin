@@ -9,8 +9,7 @@ import {
 } from 'react-icons/fa'; // Import React Icons
 import { APISource } from '../../data/source-api'; // Import API function
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types'; // Import PropTypes
-
+import PropTypes from 'prop-types';
 // Main Component
 export const GetAllRequest = ({ isDarkMode }) => {
   const [requests, setRequests] = useState([]); // State to hold requests
@@ -67,17 +66,17 @@ export const GetAllRequest = ({ isDarkMode }) => {
             isDarkMode ? 'text-white' : 'text-gray-800'
           }`}
         >
-          All Requests
+          Semua permintaan
         </h1>
 
         {/* Conditional Rendering for Loading, Error, and Data */}
         {loading ? (
-          <div className="flex justify-center items-center space-x-3">
-            <FaSpinner className="animate-spin text-gray-500 text-3xl" />
-            <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              Loading...
-            </span>
-          </div>
+      <div className={`min-h-screen flex flex-col justify-center items-center ${isDarkMode ? 'bg-gray-900' : 'bg-transparent'}`}>
+      <div className="flex justify-center items-center space-x-3">
+        <FaSpinner className="animate-spin text-gray-500 text-3xl" />
+        <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Loading...</span>
+      </div>
+    </div>
         ) : error ? (
           <div className="text-center text-red-600 flex justify-center items-center space-x-2">
             <FaExclamationCircle className="text-red-600 text-3xl" />
@@ -178,7 +177,7 @@ export const GetAllRequest = ({ isDarkMode }) => {
                             : 'bg-blue-600 text-white hover:bg-blue-700'
                         }`}
                       >
-                        View Details
+                        Lihat detail
                       </Link>
                     </div>
                   </div>
@@ -201,5 +200,5 @@ export const GetAllRequest = ({ isDarkMode }) => {
 };
 // PropTypes validation
 GetAllRequest.propTypes = {
-  isDarkMode: PropTypes.bool.isRequired, // Expecting isDarkMode to be a required boolean
+isDarkMode: PropTypes.bool.isRequired,
 };

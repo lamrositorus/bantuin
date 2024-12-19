@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { FaSpinner, FaExclamationCircle } from 'react-icons/fa'; // Import React Icons
+import { FaSpinner, FaExclamationCircle, FaEye, FaEyeSlash } from 'react-icons/fa'; // Import Eye Icons
 import { useParams } from 'react-router-dom';
 import { APISource } from '../../data/source-api';
 import profil from '../../assets/profile.png';
 import Swal from 'sweetalert2';
 import { toast, ToastContainer } from 'react-toastify';
-
+import PropTypes from 'prop-types';
 const validatePhoneNumber = (phone) => {
   const phoneRegex = /^(?:\+62|62|0)[2-9][0-9]{8,12}$/;
   return phoneRegex.test(phone);
@@ -30,6 +30,7 @@ export const Profile = ({ isDarkMode }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState(null);
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -51,43 +52,46 @@ export const Profile = ({ isDarkMode }) => {
     setIsEditing(true);
   };
 
-  const handleSave = async () => {
-    const validationErrors = validateForm(editedProfile);
+const handleSave = async () => {
+  const validationErrors = validateForm(editedProfile);
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+    return;
+  }
+
+  // Cek apakah password diubah
+  const passwordChanged = editedProfile.password && editedProfile.password.length > 0;
+
+  // Menampilkan konfirmasi menggunakan SweetAlert
+  const confirmSave = await Swal.fire({
+    title: 'Apakah Anda yakin?',
+    text: passwordChanged ? "Perubahan ini akan disimpan!" : "Password tidak diubah. Apakah Anda ingin melanjutkan?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Simpan',
+    cancelButtonText: 'Batal',
+    reverseButtons: true,
+  });
+
+  if (confirmSave.isConfirmed) {
+    try {
+      setLoading(true);
+      await APISource.updateProfile(userId, editedProfile);
+      setProfile(editedProfile);
+      setIsEditing(false);
+      setErrors({});
+      Swal.fire('Berhasil', 'Profil telah diperbarui.', 'success');
+    } catch (err) {
+      setError(err.message);
+      toast.error('Gagal memperbarui profil!');
+    } finally {
+      setLoading(false);
     }
-
-    // Menampilkan konfirmasi menggunakan SweetAlert
-    const confirmSave = await Swal.fire({
-      title: 'Apakah Anda yakin?',
-      text: "Perubahan ini akan disimpan!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Simpan',
-      cancelButtonText: 'Batal',
-      reverseButtons: true,
-    });
-
-    if (confirmSave.isConfirmed) {
-      try {
-        setLoading(true);
-        await APISource.updateProfile(userId, editedProfile);
-        setProfile(editedProfile);
-        setIsEditing(false);
-        setErrors({});
-        Swal.fire('Berhasil', 'Profil telah diperbarui.', 'success');
-      } catch (err) {
-        setError(err.message);
-        toast.error('Gagal memperbarui profil!');
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      toast.info('Pembaharuan profil dibatalkan');
-    }
-  };
+  } else {
+    toast.info('Pembaharuan profil dibatalkan');
+  }
+};
 
   const handleCancel = () => {
     setEditedProfile(profile);
@@ -120,7 +124,25 @@ export const Profile = ({ isDarkMode }) => {
         <p className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-3`}>{label}:</p>
         {isEditing ? (
           <div>
-            <input type={type} value={localValue} onChange={handleInputChange} onBlur={handleBlur} className={`w-full p-3 rounded-xl border ${error ? 'border-red-500' : 'border-gray-200'} ${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-white text-gray-800'} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`} />
+      <div className="relative flex items-center">
+              <input
+                type={field === "password" && !showPassword ? "password" : "text"}
+                value={localValue}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                className={`w-full p-3 pr-12 rounded-xl border ${error ? 'border-red-500' : 'border-gray-200'} ${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-white text-gray-800'} focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200`}
+                style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} // CSS untuk mengatur overflow
+              />
+              {field === "password" && (
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3"
+                >
+                  {showPassword ? <FaEyeSlash className="text-gray-500 h-8" /> : <FaEye className="text-gray-500 h-8" />}
+                </button>
+              )}
+      </div>
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           </div>
         ) : (
@@ -176,7 +198,7 @@ export const Profile = ({ isDarkMode }) => {
 
             {!isEditing ? (
               <button onClick={handleEdit}
-                className="mt-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
+                className="mt-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:-translate-y- 0.5 transition-all duration-200 flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path
                     d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
@@ -186,7 +208,7 @@ export const Profile = ({ isDarkMode }) => {
             ) : (
               <div className="space-x-3 mt-4">
                 <button onClick={handleSave}
-                  className="bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:-translate-y-0 .5 transition-all duration-200">
+                  className="bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-2.5 rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                   Save Changes
                 </button>
                 <button onClick={handleCancel}
@@ -226,4 +248,9 @@ export const Profile = ({ isDarkMode }) => {
       <ToastContainer />
     </div>
   );
+};
+Profile.propTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
+
+  
 };
